@@ -10,6 +10,7 @@ body {
   background: linear-gradient(315deg, #e3ffb2, #96f9ee);
   background-attachment: fixed;
   font-family: sans-serif;
+  color: grey;
   text-align: center;
   padding: 0;
   margin: 0;
@@ -22,6 +23,7 @@ header {
 }
 
 header h1 {
+  color: rgb(57, 57, 57);
   position: absolute;
   top: 50%;
   left: 50%;
@@ -61,7 +63,9 @@ footer {
 }
 
 #submitButton {
-  width: 100px;
+  width: 160px;
+  font-size: 20px;
+  color: grey;
   font-weight: bold;
   cursor: pointer;
 }
