@@ -38,7 +38,7 @@ main {
   min-height: 50%;
   margin: 20px auto;
   background-color: rgba(255, 255, 255, 0.526);
-  border: 1.5px solid rgba(255, 255, 255, 0.832);
+  border: 2px solid rgba(255, 255, 255, 0.832);
   border-radius: 20px;
 }
 
@@ -51,6 +51,8 @@ footer {
   height: 10%;
 }
 
+/*  INPUT NEW TASK */
+
 #taskForm {
   width: 90%;
   height: 50px;
@@ -59,32 +61,38 @@ footer {
 
 #taskInput {
   width: 50%;
-  font-size: 20px;
 }
 
 #submitButton {
   width: 160px;
-  font-size: 20px;
   color: grey;
   font-weight: bold;
   cursor: pointer;
 }
 
+#submitButton:hover {
+  background-color: #f7ff9e;
+}
+
 #taskInput,
 #submitButton {
   font-family: sans-serif;
+  font-size: 20px;
   box-sizing: border-box;
   height: 40px;
-  border: 2px solid white;
+  border: 2px solid rgb(255, 255, 255);
   border-radius: 10px;
   padding: 0 10px;
   margin: 0;
   vertical-align: middle;
 }
 
-#deleteButton {
-  background-color: rgba(255, 255, 255, 0.726);
-  border: 2px solid red;
+/* TASK BUTTONS */
+
+.task-buttons,
+.comment-button {
+  background-color: white;
+  border: 2px solid white;
   border-radius: 5px;
   cursor: pointer;
   padding: 3px;
@@ -92,14 +100,24 @@ footer {
   text-align: right;
 }
 
-#taskDone {
-  background-color: rgba(255, 255, 255, 0.726);
-  border: 2px solid rgb(0, 255, 21);
+.comment-div {
+  width: 100%;
+  display: block;
+  background-color: white;
+  border-radius: 5px;
+}
+
+.comment-input {
+  font-family: sans-serif;
+  box-sizing: border-box;
+  width: 80%;
+  height: 30px;
+  border: 2px solid white;
   border-radius: 5px;
   cursor: pointer;
   padding: 3px;
   margin: 0 5px;
-  text-align: right;
+  text-align: left;
 }
 
 ul {
@@ -110,7 +128,6 @@ ul {
 
 ul li {
   width: 90%;
-  height: 50px;
   text-align: left;
   list-style-type: disc;
 }
@@ -125,4 +142,9 @@ li p {
   font-size: 26px;
   font-weight: bold;
   padding: 5px;
+  margin: 0;
+}
+
+.task-crossed {
+  text-decoration: line-through;
 }

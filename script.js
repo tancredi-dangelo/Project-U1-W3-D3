@@ -13,16 +13,24 @@ const addTask = function(e) {
         taskText.innerText = inputValue
         
         let checkBox = document.createElement("button")
-        checkBox.setAttribute("id", "taskDone")
+        checkBox.setAttribute("type", "button")
+        checkBox.classList.add("task-buttons")
         checkBox.innerText = "✔️"
         checkBox.addEventListener("click", crossTask)
 
         let deleteButton = document.createElement("button")
-        deleteButton.setAttribute("id", "deleteButton")
+        deleteButton.setAttribute("type", "button")
+        deleteButton.classList.add("task-buttons")
         deleteButton.innerText = "❌"
         deleteButton.addEventListener("click", removeTask)
+
+        let commentButton = document.createElement("button")
+        commentButton.setAttribute("type", "button")
+        commentButton.classList.add("task-buttons")
+        commentButton.innerText = "✏️"
+        commentButton.addEventListener("click", commentTask)
         
-        taskCard.append(taskText, checkBox, deleteButton)
+        taskCard.append(taskText, checkBox, deleteButton, commentButton)
         taskList.appendChild(taskCard)
 
         input.value = ""
@@ -31,13 +39,64 @@ const addTask = function(e) {
     }
 }
 
+const commentTask = function(e) {
+    commentDiv.style.display = "block"
+    e.target.parentElement.appendChild(commentDiv)
+}
+
 const crossTask = function(e) {
     let taskToCross = e.target.parentElement.querySelector("p")
-    taskToCross.setAttribute("style", "text-decoration: line-through;")
+    taskToCross.classList.toggle("task-crossed")
 }
 
 const removeTask = function(e) {
     e.target.parentElement.remove()
 }
+
+const removeComment = function(e) {
+    e.target.parentElement.remove()
+}
+
+const submitComment = function(e) {
+    const commentDiv = e.target.parentElement
+    const commentInput = commentDiv.querySelector(".comment-input")
+    const text = commentInput.value.trim()
+
+    if (text === "") return 
+
+    const comment = document.createElement("p")
+    comment.innerText = text
+    comment.classList.add("comment-created")
+
+    commentDiv.parentElement.appendChild(comment)
+
+    commentDiv.style.display = "none"
+
+    commentInput.value = ""
+}
+
+let commentDiv = document.createElement("div")
+commentDiv.classList.add("comment-div")
+commentDiv.style.display = "none"
+    
+let commentInput = document.createElement("input")
+commentInput.type = "text"
+commentInput.placeholder = "write a comment..."
+commentInput.classList.add("comment-input")
+
+let submitCommentButton = document.createElement("button")
+submitCommentButton.type = "button"
+submitCommentButton.classList.add("comment-button")
+submitCommentButton.innerText = "✅"
+submitCommentButton.addEventListener("click", submitComment)
+
+let removeCommentButton = document.createElement("button")
+removeCommentButton.type = "button"
+removeCommentButton.classList.add("comment-button")
+removeCommentButton.innerText = "⛔️"
+removeCommentButton.addEventListener("click", removeComment)
+
+commentDiv.append(commentInput, submitCommentButton, removeCommentButton)
+
 
 button.addEventListener("click", addTask)
