@@ -1,11 +1,13 @@
 html {
   height: 100%;
   width: 100%;
+  min-width: 400px;
 }
 
 body {
   width: 100%;
   height: 100%;
+  min-width: 400px;
   background: #e3ffb2;
   background: linear-gradient(315deg, #e3ffb2, #96f9ee);
   background-attachment: fixed;
@@ -18,8 +20,10 @@ body {
 
 header {
   width: 100%;
-  height: 20%;
+  height: 15%;
   position: relative;
+  margin: 0;
+  padding: 0;
 }
 
 header h1 {
@@ -34,11 +38,13 @@ header h1 {
 }
 
 main {
-  width: 70%;
+  width: 80%;
   min-height: 50%;
+  min-width: 300px;
   margin: 20px auto;
   background-color: rgba(255, 255, 255, 0.526);
   border: 2px solid rgba(255, 255, 255, 0.832);
+  box-shadow: 0 0 10px 5px rgba(0, 0, 0, 0.214);
   border-radius: 20px;
   display: flex;
   align-items: center;
@@ -47,7 +53,8 @@ main {
 }
 
 h2 {
-  font-size: 36px;
+  width: 100%;
+  font-size: 30px;
 }
 
 footer {
@@ -67,17 +74,22 @@ footer {
 
 #taskInput {
   width: 70%;
+  margin-right: 5px;
 }
 
 #submitButton {
   width: 25%;
+  min-width: 120px;
+  background-color: #f7ff9e;
+  font-size: 20%;
   color: grey;
   font-weight: bold;
   cursor: pointer;
+  margin-left: 5px;
 }
 
 #submitButton:hover {
-  background-color: #f7ff9e;
+  background-color: #f3ff6b;
 }
 
 #taskInput,
@@ -89,7 +101,6 @@ footer {
   border: 2px solid rgb(255, 255, 255);
   border-radius: 10px;
   padding: 0 10px;
-  margin: 0;
   vertical-align: middle;
 }
 
@@ -109,43 +120,69 @@ footer {
 
 .comment-div {
   width: 100%;
-  display: block;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
   background-color: white;
   border-radius: 5px;
-  padding: 3px;
+  padding: 2px;
+  margin: 0 5px;
 }
 
 .comment-input {
-  font-family: sans-serif;
+  flex: 1;
+  height: 100%;
+  width: 80%;
   box-sizing: border-box;
-  border: 2px solid white;
+  display: inline-block;
+  border: 0.5px solid white;
+  border-radius: 5px;
+  font-family: sans-serif;
+}
+
+.comment-input:focus {
+  outline: none;
+  border: none;
+}
+
+#commentButtonsDiv {
+  display: flex;
+  width: 20%;
+  gap: 5px;
+  float: right;
+}
+
+.comment-button {
+  height: 100%;
+  padding: 2px 10px;
+  background-color: white;
+  border: white;
   border-radius: 5px;
   cursor: pointer;
-  padding: 3px;
-  margin: 0 5px;
-  text-align: left;
+  font-family: sans-serif;
+  color: purple;
+  font-weight: bold;
 }
 
 ul {
-  width: 80%;
-  margin: auto;
-  padding: 20px;
+  width: 90%;
+  margin: 20px;
+  list-style: disc;
 }
 
 ul li {
-  width: 90%;
-  text-align: left;
-  list-style-type: disc;
-}
-
-li p,
-li button {
-  display: inline-block;
-  vertical-align: middle;
+  min-height: 35px;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+  margin: 20px 0;
 }
 
 li p {
-  font-size: 26px;
+  font-size: 20px;
   font-weight: bold;
   padding: 5px;
   margin: 0;
