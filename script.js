@@ -76,7 +76,6 @@ const submitComment = function(e) {
 }
 
 let commentDiv = document.createElement("div")
-commentDiv.classList.add("comment-div")
 commentDiv.style.display = "none"
     
 let commentInput = document.createElement("input")
@@ -88,15 +87,16 @@ let submitCommentButton = document.createElement("button")
 submitCommentButton.type = "button"
 submitCommentButton.classList.add("comment-button")
 submitCommentButton.innerText = "✅"
+submitCommentButton.innerText = "Add"
 submitCommentButton.addEventListener("click", submitComment)
 
 let removeCommentButton = document.createElement("button")
 removeCommentButton.type = "button"
 removeCommentButton.classList.add("comment-button")
 removeCommentButton.innerText = "⛔️"
+removeCommentButton.innerText = "Discard"
 removeCommentButton.addEventListener("click", removeComment)
 
-commentDiv.append(commentInput, submitCommentButton, removeCommentButton)
 
 
 button.addEventListener("click", addTask)

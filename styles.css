@@ -40,6 +40,10 @@ main {
   background-color: rgba(255, 255, 255, 0.526);
   border: 2px solid rgba(255, 255, 255, 0.832);
   border-radius: 20px;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  justify-content: flex-start;
 }
 
 h2 {
@@ -54,17 +58,19 @@ footer {
 /*  INPUT NEW TASK */
 
 #taskForm {
-  width: 90%;
+  width: 80%;
   height: 50px;
-  display: inline-block;
+  display: flex;
+  align-items: center;
+  justify-content: space-evenly;
 }
 
 #taskInput {
-  width: 50%;
+  width: 70%;
 }
 
 #submitButton {
-  width: 160px;
+  width: 25%;
   color: grey;
   font-weight: bold;
   cursor: pointer;
@@ -89,29 +95,29 @@ footer {
 
 /* TASK BUTTONS */
 
-.task-buttons,
-.comment-button {
+.task-buttons {
   background-color: white;
-  border: 2px solid white;
+  border: 2px solid rgb(188, 188, 188);
   border-radius: 5px;
   cursor: pointer;
   padding: 3px;
   margin: 0 5px;
-  text-align: right;
+  font-family: sans-serif;
 }
+
+/* COMMENT DIV */
 
 .comment-div {
   width: 100%;
   display: block;
   background-color: white;
   border-radius: 5px;
+  padding: 3px;
 }
 
 .comment-input {
   font-family: sans-serif;
   box-sizing: border-box;
-  width: 80%;
-  height: 30px;
   border: 2px solid white;
   border-radius: 5px;
   cursor: pointer;
