@@ -19,8 +19,11 @@ const addTask = function(e) {
 
         let taskText = document.createElement("p")      // title of the task
         taskText.innerText = inputValue
+
+        let taskButtonsDiv = document.createElement("div") // buttons div
+        taskButtonsDiv.classList.add("task-buttons-div")
         
-        let checkBox = document.createElement("button")
+        let checkBox = document.createElement("button") 
         checkBox.setAttribute("type", "button")
         checkBox.classList.add("task-buttons")
         checkBox.innerText = "✔️"
@@ -37,8 +40,9 @@ const addTask = function(e) {
         commentButton.classList.add("task-buttons")
         commentButton.innerText = "✏️"
         commentButton.addEventListener("click", commentTask)
-        
-        taskMain.append(taskText, checkBox, deleteButton, commentButton)
+
+        taskButtonsDiv.append(checkBox, commentButton, deleteButton)
+        taskMain.append(taskText, taskButtonsDiv)
         taskCard.appendChild(taskMain)
         taskList.appendChild(taskCard)
 
@@ -46,25 +50,30 @@ const addTask = function(e) {
 
     }   else {
 
-        alert("type something")
+        //input.setAttribute("style", "border: 2px solid red;")
 
     }
 }
 
 const commentTask = function(e) {
 
+    // CREATE COMMENT DIV
     let commentDiv = document.createElement("div")
     commentDiv.style.display = "none"
     commentDiv.classList.add("comment-div")
-        
+     
+    //CREATE COMMENT INPUT
     let commentInput = document.createElement("input")
     commentInput.type = "text"
     commentInput.placeholder = "write a comment..."
     commentInput.classList.add("comment-input")
+    commentInput.setAttribute("id", "commentInput")
 
+    //CREATE COMMENT BUTTONS DIV
     let commentButtonsDiv = document.createElement("div")
     commentButtonsDiv.setAttribute("id", "commentButtonsDiv")
 
+    //CREATE COMMENT SUBMIT BUTTON
     let submitCommentButton = document.createElement("button")
     submitCommentButton.type = "button"
     submitCommentButton.classList.add("comment-button")
@@ -72,49 +81,123 @@ const commentTask = function(e) {
     submitCommentButton.innerText = "Add"
     submitCommentButton.addEventListener("click", submitComment)
 
+    //CREATE DISCARD COMMENT BUTTON
     let removeCommentButton = document.createElement("button")
     removeCommentButton.type = "button"
     removeCommentButton.classList.add("comment-button")
     removeCommentButton.setAttribute("id", "discardComment")
     removeCommentButton.innerText = "Discard"
-    removeCommentButton.addEventListener("click", removeComment)
+    removeCommentButton.addEventListener("click", discardCommentFunc)
 
+
+    // APPEND ELEMENTS TO COMMENT DIV
     commentButtonsDiv.append(submitCommentButton, removeCommentButton)
 
-    commentDiv.append(commentInput)
+    commentDiv.append(commentInput, commentButtonsDiv)
         commentDiv.style.display = "block"
-        e.target.parentElement.parentElement.append(commentDiv, commentButtonsDiv)
+        e.target.parentElement.parentElement.parentElement.append(commentDiv)
 }
 
 const crossTask = function(e) {
-    let taskToCross = e.target.parentElement.querySelector("p")
+    let taskToCross = e.target.parentElement.parentElement.querySelector("p")
     taskToCross.classList.toggle("task-crossed")
 }
 
 const removeTask = function(e) {
+    e.target.parentElement.parentElement.parentElement.remove()
+}
+
+const discardCommentFunc = function(e) {
     e.target.parentElement.parentElement.remove()
 }
 
-const removeComment = function(e) {
-    e.target.parentElement.parentElement.querySelector("comment-div").remove()
+const modifyComment = function(e) {
+
+    // Get the current comment container
+    let commentContainer = e.target.parentElement.parentElement
+
+    // Get existing text
+    let oldText = commentContainer.querySelector("p").innerText
+
+    // CREATE COMMENT DIV (same as commentTask)
+    let commentDiv = document.createElement("div")
+    commentDiv.classList.add("comment-div")
+
+    let commentInput = document.createElement("input")
+    commentInput.type = "text"
+    commentInput.classList.add("comment-input")
+    commentInput.value = oldText  
+
+    let commentButtonsDiv = document.createElement("div")
+
+    let submitCommentButton = document.createElement("button")
+    submitCommentButton.innerText = "Save"
+    submitCommentButton.classList.add("new-comment-action-buttons")
+    submitCommentButton.addEventListener("click", submitComment)
+
+    let removeCommentButton = document.createElement("button")
+    removeCommentButton.innerText = "Discard"
+    removeCommentButton.classList.add("new-comment-action-buttons")
+    removeCommentButton.addEventListener("click", discardCommentFunc)
+
+    commentButtonsDiv.append(submitCommentButton, removeCommentButton)
+    commentDiv.append(commentInput, commentButtonsDiv)
+
+    // Replace old comment with editable version
+    commentContainer.replaceWith(commentDiv)
 }
+    
 
 const submitComment = function(e) {
-    const commentDiv = e.target.parentElement
-    const commentInput = commentDiv.querySelector(".comment-input")
-    const text = commentInput.value.trim()
 
-    if (text === "") return 
+    let commentDiv = e.target.parentElement.parentElement
+    let commentInput = commentDiv.querySelector(".comment-input")
+    let text = commentInput.value.trim()
 
-    const comment = document.createElement("p")
-    comment.innerText = text
-    comment.classList.add("comment-created")
+    if (text === "") {
 
-    commentDiv.parentElement.appendChild(comment)
+        commentInput.setAttribute("style", "border: 2px solid red;")
 
-    commentDiv.style.display = "none"
+    } else {
 
-    commentInput.value = ""
+        //CREATE NEW COMMENT TEXT
+        let newCommentDiv = document.createElement("div")
+        newCommentDiv.classList.add("new-comment-div")
+
+        let newCommentText = document.createElement("p")
+        newCommentText.innerText = text
+        newCommentText.classList.add("comment-created")
+
+        //CREATE NEW COMMENT BUTTONS
+        let newCommentButtonsDiv = document.createElement("div")
+        newCommentButtonsDiv.classList.add("new-comment-buttons-div")
+
+        let modifyCommentButton = document.createElement("button")
+        modifyCommentButton.classList.add("new-comment-action-buttons")
+        modifyCommentButton.innerText = "Modify"
+        modifyCommentButton.addEventListener("click", modifyComment)
+
+        let deleteCommentButton = document.createElement("button")
+        deleteCommentButton.classList.add("new-comment-action-buttons")
+        deleteCommentButton.innerText = "Delete"
+        deleteCommentButton.addEventListener("click", discardCommentFunc)
+
+
+        //APPENDING ELEMENTS TO THEIR DIV
+        newCommentButtonsDiv.append(modifyCommentButton, deleteCommentButton)
+
+        newCommentDiv.append(newCommentText, newCommentButtonsDiv)
+
+        commentDiv.parentElement.appendChild(newCommentDiv)
+
+        //REMOVING ADD-COMMENT DIV
+        commentDiv.remove()
+
+        //RESET COMMENT INPUT VALUE
+        commentInput.value = ""
+
+    }
+
 }
 
 
