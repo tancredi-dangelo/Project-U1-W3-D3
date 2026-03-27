@@ -4,15 +4,20 @@ const input = document.getElementById("taskInput")
 const taskList = document.getElementById("taskList")
 
 const addTask = function(e) {
-    e.preventDefault()
-    if (input.value !== "") {
-        let inputValue = input.value
-        let taskCard = document.createElement("li")
 
-        let taskMain = document.createElement("div")
+    e.preventDefault()
+
+    if (input.value !== "") {
+
+        let inputValue = input.value
+
+        let taskCard = document.createElement("li")
+        taskCard.classList.add("task-card")
+
+        let taskMain = document.createElement("div")    // first div of the "li"
         taskMain.classList.add("task-main")
 
-        let taskText = document.createElement("p")
+        let taskText = document.createElement("p")      // title of the task
         taskText.innerText = inputValue
         
         let checkBox = document.createElement("button")
@@ -35,16 +40,48 @@ const addTask = function(e) {
         
         taskMain.append(taskText, checkBox, deleteButton, commentButton)
         taskCard.appendChild(taskMain)
+        taskList.appendChild(taskCard)
 
         input.value = ""
+
     }   else {
+
         alert("type something")
+
     }
 }
 
 const commentTask = function(e) {
-    commentDiv.style.display = "block"
-    e.target.parentElement.appendChild(commentDiv)
+
+    let commentDiv = document.createElement("div")
+    commentDiv.style.display = "none"
+    commentDiv.classList.add("comment-div")
+        
+    let commentInput = document.createElement("input")
+    commentInput.type = "text"
+    commentInput.placeholder = "write a comment..."
+    commentInput.classList.add("comment-input")
+
+    let commentButtonsDiv = document.createElement("div")
+    commentButtonsDiv.setAttribute("id", "commentButtonsDiv")
+
+    let submitCommentButton = document.createElement("button")
+    submitCommentButton.type = "button"
+    submitCommentButton.classList.add("comment-button")
+    submitCommentButton.innerText = "Add"
+    submitCommentButton.addEventListener("click", submitComment)
+
+    let removeCommentButton = document.createElement("button")
+    removeCommentButton.type = "button"
+    removeCommentButton.classList.add("comment-button")
+    removeCommentButton.innerText = "Discard"
+    removeCommentButton.addEventListener("click", removeComment)
+
+    commentButtonsDiv.append(submitCommentButton, removeCommentButton)
+
+    commentDiv.append(commentInput)
+        commentDiv.style.display = "block"
+        e.target.parentElement.parentElement.append(commentDiv, commentButtonsDiv)
 }
 
 const crossTask = function(e) {
@@ -78,33 +115,6 @@ const submitComment = function(e) {
     commentInput.value = ""
 }
 
-let commentDiv = document.createElement("div")
-commentDiv.style.display = "none"
-commentDiv.classList.add("comment-div")
-    
-let commentInput = document.createElement("input")
-commentInput.type = "text"
-commentInput.placeholder = "write a comment..."
-commentInput.classList.add("comment-input")
-
-let commentButtonsDiv = document.createElement("div")
-commentButtonsDiv.setAttribute("id", "commentButtonsDiv")
-
-let submitCommentButton = document.createElement("button")
-submitCommentButton.type = "button"
-submitCommentButton.classList.add("comment-button")
-submitCommentButton.innerText = "Add"
-submitCommentButton.addEventListener("click", submitComment)
-
-let removeCommentButton = document.createElement("button")
-removeCommentButton.type = "button"
-removeCommentButton.classList.add("comment-button")
-removeCommentButton.innerText = "Discard"
-removeCommentButton.addEventListener("click", removeComment)
-
-commentButtonsDiv.append(submitCommentButton, removeCommentButton)
-
-commentDiv.append(commentInput, commentButtonsDiv)
 
 
 button.addEventListener("click", addTask)
