@@ -68,12 +68,14 @@ const commentTask = function(e) {
     let submitCommentButton = document.createElement("button")
     submitCommentButton.type = "button"
     submitCommentButton.classList.add("comment-button")
+    submitCommentButton.setAttribute("id", "submitComment")
     submitCommentButton.innerText = "Add"
     submitCommentButton.addEventListener("click", submitComment)
 
     let removeCommentButton = document.createElement("button")
     removeCommentButton.type = "button"
     removeCommentButton.classList.add("comment-button")
+    removeCommentButton.setAttribute("id", "discardComment")
     removeCommentButton.innerText = "Discard"
     removeCommentButton.addEventListener("click", removeComment)
 
@@ -90,11 +92,11 @@ const crossTask = function(e) {
 }
 
 const removeTask = function(e) {
-    e.target.parentElement.remove()
+    e.target.parentElement.parentElement.remove()
 }
 
 const removeComment = function(e) {
-    e.target.parentElement.remove()
+    e.target.parentElement.parentElement.querySelector("comment-div").remove()
 }
 
 const submitComment = function(e) {
