@@ -1,12 +1,12 @@
 <!doctype html>
-<html>
+<html lang="en">
   <head>
     <meta charset="utf-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <title>myTask</title>
     <meta name="description" content="Easy Task Manager" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <link rel="stylesheet" href="./styles.css" />
+    <link rel="stylesheet" href="./theme2.css" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
@@ -16,14 +16,15 @@
   </head>
   <body>
     <header>
-      <ion-icon name="menu-outline"></ion-icon>
+      <ion-icon id="menu-icon" name="menu-outline"></ion-icon>
       <h1>myTask</h1>
+      <ion-icon id="account-icon" name="person-outline"></ion-icon>
     </header>
     <main>
       <h2>Add a new task</h2>
       <form id="taskForm">
-        <input id="taskInput" type="text" required />
-        <button id="submitButton" type="submit">Add Task</button>
+        <textarea id="taskInput" rows="1" required></textarea>
+        <button id="submitButton" type="submit">Add</button>
       </form>
       <ul id="taskList"></ul>
     </main>

@@ -3,6 +3,11 @@ const button = document.getElementById("submitButton")
 const input = document.getElementById("taskInput")
 const taskList = document.getElementById("taskList")
 
+taskInput.addEventListener("input", () => {
+  taskInput.style.height = "auto";              // reset height
+  taskInput.style.height = taskInput.scrollHeight + "px"; // expand
+});
+
 const addTask = function(e) {
 
     e.preventDefault()
@@ -26,31 +31,41 @@ const addTask = function(e) {
         let checkBox = document.createElement("button") 
         checkBox.setAttribute("type", "button")
         checkBox.classList.add("task-buttons")
-        checkBox.innerText = "✔️"
+        checkBox.innerHTML = `<span class="material-symbols-outlined">
+check
+</span>`
         checkBox.addEventListener("click", crossTask)
 
         let deleteButton = document.createElement("button")
         deleteButton.setAttribute("type", "button")
         deleteButton.classList.add("task-buttons")
-        deleteButton.innerText = "❌"
+        deleteButton.innerHTML = `<ion-icon name="close"></ion-icon>`
         deleteButton.addEventListener("click", removeTask)
 
         let commentButton = document.createElement("button")
         commentButton.setAttribute("type", "button")
         commentButton.classList.add("task-buttons")
-        commentButton.innerText = "✏️"
+        commentButton.innerHTML = `<ion-icon name="pencil" style="font-size: 20px"></ion-icon>`
         commentButton.addEventListener("click", commentTask)
 
-        taskButtonsDiv.append(checkBox, commentButton, deleteButton)
+        let shareButton = document.createElement("button")
+        shareButton.setAttribute("type", "button")
+        shareButton.classList.add("task-buttons")
+        shareButton.innerHTML = `<ion-icon name="share-social-outline"></ion-icon>`
+        shareButton.addEventListener("click", shareTask)
+
+        taskButtonsDiv.append(checkBox, commentButton, deleteButton, shareButton)
         taskMain.append(taskText, taskButtonsDiv)
         taskCard.appendChild(taskMain)
         taskList.appendChild(taskCard)
 
         input.value = ""
+        input.style.height = "40px"; // reset height
 
     }   else {
 
-        //input.setAttribute("style", "border: 2px solid red;")
+        input.setAttribute("style", "border: 1px solid red;")
+        input.setAttribute("style", "box-shadow: 0 0 5px 1px red;")
 
     }
 }
@@ -71,7 +86,7 @@ const commentTask = function(e) {
 
     //CREATE COMMENT BUTTONS DIV
     let commentButtonsDiv = document.createElement("div")
-    commentButtonsDiv.setAttribute("id", "commentButtonsDiv")
+    commentButtonsDiv.classList.add("comment-buttons-div")
 
     //CREATE COMMENT SUBMIT BUTTON
     let submitCommentButton = document.createElement("button")
@@ -107,6 +122,10 @@ const removeTask = function(e) {
     e.target.parentElement.parentElement.parentElement.remove()
 }
 
+const shareTask = function(e) {
+
+}
+
 const discardCommentFunc = function(e) {
     e.target.parentElement.parentElement.remove()
 }
@@ -126,9 +145,11 @@ const modifyComment = function(e) {
     let commentInput = document.createElement("input")
     commentInput.type = "text"
     commentInput.classList.add("comment-input")
+    commentInput.setAttribute("id", "commentInput")
     commentInput.value = oldText  
 
     let commentButtonsDiv = document.createElement("div")
+    commentButtonsDiv.classList.add("comment-buttons-div")
 
     let submitCommentButton = document.createElement("button")
     submitCommentButton.innerText = "Save"
@@ -199,7 +220,5 @@ const submitComment = function(e) {
     }
 
 }
-
-
 
 button.addEventListener("click", addTask)
