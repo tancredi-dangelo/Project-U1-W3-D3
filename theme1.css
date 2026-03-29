@@ -29,7 +29,7 @@ header {
   justify-content: space-between;
 }
 
-ion-icon {
+header ion-icon {
   box-sizing: border-box;
   height: 100%;
   width: 10%;
@@ -53,7 +53,7 @@ main {
   width: 100%;
   min-height: 50%;
   min-width: 300px;
-  margin: 20px auto;
+  margin: 0 auto;
   background-color: rgba(255, 255, 255, 0);
   border-radius: 20px;
   display: flex;
@@ -112,12 +112,11 @@ footer {
 #taskInput:focus {
   outline: none;
   border: none;
-  box-shadow: 0 0 5px 1px rgba(0, 0, 0, 0.111);
 }
 
 #submitButton {
-  width: 100%;
-  background-color: rgb(255, 255, 32);
+  width: 50%;
+  background-color: rgb(255, 255, 135);
   font-size: 20%;
   color: grey;
   font-weight: bold;
@@ -126,7 +125,7 @@ footer {
 }
 
 #submitButton:hover {
-  background-color: yellow;
+  background-color: rgb(255, 255, 88);
 }
 
 #taskInput,
@@ -154,14 +153,20 @@ footer {
 }
 
 .task-buttons {
-  width: 30px;
-  height: 30px;
+  width: 35px;
+  height: 35px;
   background-color: white;
   border: 1px solid white;
   border-radius: 5px;
   cursor: pointer;
   box-shadow: 0 0 5px 1px rgba(0, 0, 0, 0.111);
   margin: 0 10px;
+  padding: 1%;
+  box-sizing: content-box;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 22px;
 }
 
 /* COMMENT DIV */
@@ -238,6 +243,7 @@ footer {
   height: 100%;
   min-width: 10%;
   padding: 3px 10px;
+  margin: 10px;
   background-color: white;
   border: none;
   border-radius: 5px;
@@ -319,4 +325,8 @@ ul li {
   text-decoration-color: black;
   text-decoration-thickness: 2px;
   text-decoration-style: solid; /* solid, dashed, dotted, wavy */
+}
+
+.error {
+  box-shadow: 0 0 5px 1px rgb(255, 73, 73);
 }

@@ -62,14 +62,6 @@ main {
   justify-content: flex-start;
 }
 
-.material-symbols-outlined {
-  font-variation-settings:
-    "FILL" 1,
-    "wght" 700,
-    "GRAD" 200,
-    "opsz" 40;
-}
-
 h2 {
   width: 100%;
   font-size: 28px;

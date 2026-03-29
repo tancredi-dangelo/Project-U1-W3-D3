@@ -3,9 +3,10 @@ const button = document.getElementById("submitButton")
 const input = document.getElementById("taskInput")
 const taskList = document.getElementById("taskList")
 
-taskInput.addEventListener("input", () => {
-  taskInput.style.height = "auto";              // reset height
-  taskInput.style.height = taskInput.scrollHeight + "px"; // expand
+input.addEventListener("input", () => {
+  input.style.height = "auto";
+  input.style.height = input.scrollHeight + "px";
+  input.classList.remove("error"); 
 });
 
 const addTask = function(e) {
@@ -31,30 +32,34 @@ const addTask = function(e) {
         let checkBox = document.createElement("button") 
         checkBox.setAttribute("type", "button")
         checkBox.classList.add("task-buttons")
-        checkBox.innerHTML = `<span class="material-symbols-outlined">
-check
-</span>`
+        checkBox.innerText = `✔️`
         checkBox.addEventListener("click", crossTask)
 
         let deleteButton = document.createElement("button")
         deleteButton.setAttribute("type", "button")
         deleteButton.classList.add("task-buttons")
-        deleteButton.innerHTML = `<ion-icon name="close"></ion-icon>`
+        deleteButton.innerText = `❌`
         deleteButton.addEventListener("click", removeTask)
+
+        let editButton = document.createElement("button")
+        editButton.setAttribute("type", "button")
+        editButton.classList.add("task-buttons")
+        editButton.innerText = `✏️`
+        editButton.addEventListener("click", editTask)
 
         let commentButton = document.createElement("button")
         commentButton.setAttribute("type", "button")
         commentButton.classList.add("task-buttons")
-        commentButton.innerHTML = `<ion-icon name="pencil" style="font-size: 20px"></ion-icon>`
+        commentButton.innerHTML = `💬`
         commentButton.addEventListener("click", commentTask)
 
         let shareButton = document.createElement("button")
         shareButton.setAttribute("type", "button")
         shareButton.classList.add("task-buttons")
-        shareButton.innerHTML = `<ion-icon name="share-social-outline"></ion-icon>`
+        shareButton.innerText = `🔗`
         shareButton.addEventListener("click", shareTask)
 
-        taskButtonsDiv.append(checkBox, commentButton, deleteButton, shareButton)
+        taskButtonsDiv.append(checkBox, editButton, commentButton, deleteButton, shareButton)
         taskMain.append(taskText, taskButtonsDiv)
         taskCard.appendChild(taskMain)
         taskList.appendChild(taskCard)
@@ -64,8 +69,7 @@ check
 
     }   else {
 
-        input.setAttribute("style", "border: 1px solid red;")
-        input.setAttribute("style", "box-shadow: 0 0 5px 1px red;")
+        input.classList.add("error")
 
     }
 }
@@ -82,7 +86,10 @@ const commentTask = function(e) {
     commentInput.type = "text"
     commentInput.placeholder = "write a comment..."
     commentInput.classList.add("comment-input")
-    commentInput.setAttribute("id", "commentInput")
+
+    commentInput.addEventListener("input", () => {
+        commentInput.classList.remove("error");
+    })
 
     //CREATE COMMENT BUTTONS DIV
     let commentButtonsDiv = document.createElement("div")
@@ -92,7 +99,6 @@ const commentTask = function(e) {
     let submitCommentButton = document.createElement("button")
     submitCommentButton.type = "button"
     submitCommentButton.classList.add("comment-button")
-    submitCommentButton.setAttribute("id", "submitComment")
     submitCommentButton.innerText = "Add"
     submitCommentButton.addEventListener("click", submitComment)
 
@@ -109,31 +115,89 @@ const commentTask = function(e) {
     commentButtonsDiv.append(submitCommentButton, removeCommentButton)
 
     commentDiv.append(commentInput, commentButtonsDiv)
-        commentDiv.style.display = "block"
-        e.target.parentElement.parentElement.parentElement.append(commentDiv)
+    commentDiv.style.display = "block"
+    e.target.closest(".task-card").append(commentDiv)
 }
 
 const crossTask = function(e) {
-    let taskToCross = e.target.parentElement.parentElement.querySelector("p")
+    let task = e.target.closest(".task-card")
+    let taskToCross = task.querySelector("p")
     taskToCross.classList.toggle("task-crossed")
 }
 
 const removeTask = function(e) {
-    e.target.parentElement.parentElement.parentElement.remove()
+    e.target.closest(".task-card").remove()
 }
 
 const shareTask = function(e) {
 
 }
 
+const editTask = function(e) {
+    let taskMain = e.target.closest(".task-main")
+    let taskTextElement = taskMain.querySelector("p")
+
+    let oldText = taskTextElement.innerText
+
+    // CREATE INPUT
+    let editInput = document.createElement("input")
+    editInput.type = "text"
+    editInput.value = oldText
+    editInput.classList.add("comment-input")
+    editInput.setAttribute("style", "margin-top: 20px;")
+
+    // HIDE TASK BUTTONS
+    taskMain.querySelector(".task-buttons-div").setAttribute("style", "display: none;") 
+
+    // CREATE BUTTONS DIV
+    let editButtonsDiv = document.createElement("div")
+    editButtonsDiv.classList.add("comment-buttons-div")
+
+    // SAVE BUTTON
+    let saveButton = document.createElement("button")
+    saveButton.innerText = "Save"
+    saveButton.classList.add("new-comment-action-buttons")
+
+    saveButton.addEventListener("click", function() {
+        let newText = editInput.value.trim()
+
+        if (newText === "") return
+
+        taskTextElement.innerText = newText
+
+        // restore original UI
+        taskMain.replaceChild(taskTextElement, editContainer)
+        taskMain.querySelector(".task-buttons-div").setAttribute("style", "display: flex;")
+    })
+
+    // CANCEL BUTTON
+    let cancelButton = document.createElement("button")
+    cancelButton.innerText = "Cancel"
+    cancelButton.classList.add("new-comment-action-buttons")
+
+    cancelButton.addEventListener("click", function() {
+        taskMain.replaceChild(taskTextElement, editContainer)
+        taskMain.querySelector(".task-buttons-div").setAttribute("style", "display: flex;")
+    })
+
+    editButtonsDiv.append(saveButton, cancelButton)
+
+    // CONTAINER FOR INPUT + BUTTONS
+    let editContainer = document.createElement("div")
+    editContainer.append(editInput, editButtonsDiv)
+
+    // REPLACE TEXT WITH INPUT
+    taskMain.replaceChild(editContainer, taskTextElement)
+}
+
 const discardCommentFunc = function(e) {
-    e.target.parentElement.parentElement.remove()
+    e.target.closest(".comment-div")?.remove()
 }
 
 const modifyComment = function(e) {
 
     // Get the current comment container
-    let commentContainer = e.target.parentElement.parentElement
+    let commentContainer = e.target.closest(".new-comment-div") || e.target.closest(".comment-div")
 
     // Get existing text
     let oldText = commentContainer.querySelector("p").innerText
@@ -145,8 +209,10 @@ const modifyComment = function(e) {
     let commentInput = document.createElement("input")
     commentInput.type = "text"
     commentInput.classList.add("comment-input")
-    commentInput.setAttribute("id", "commentInput")
     commentInput.value = oldText  
+    commentInput.addEventListener("input", () => {
+        commentInput.classList.remove("error");
+    });
 
     let commentButtonsDiv = document.createElement("div")
     commentButtonsDiv.classList.add("comment-buttons-div")
@@ -157,7 +223,7 @@ const modifyComment = function(e) {
     submitCommentButton.addEventListener("click", submitComment)
 
     let removeCommentButton = document.createElement("button")
-    removeCommentButton.innerText = "Discard"
+    removeCommentButton.innerText = "Cancel"
     removeCommentButton.classList.add("new-comment-action-buttons")
     removeCommentButton.addEventListener("click", discardCommentFunc)
 
@@ -171,13 +237,14 @@ const modifyComment = function(e) {
 
 const submitComment = function(e) {
 
-    let commentDiv = e.target.parentElement.parentElement
+    let commentDiv = e.target.closest(".comment-div")
     let commentInput = commentDiv.querySelector(".comment-input")
     let text = commentInput.value.trim()
 
     if (text === "") {
 
-        commentInput.setAttribute("style", "border: 2px solid red;")
+        commentInput.classList.add("error")
+        return
 
     } else {
 
