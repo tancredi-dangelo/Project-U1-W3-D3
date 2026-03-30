@@ -32,31 +32,31 @@ const addTask = function(e) {
         let checkBox = document.createElement("button") 
         checkBox.setAttribute("type", "button")
         checkBox.classList.add("task-buttons")
-        checkBox.innerText = `✔️`
+        checkBox.innerHTML = `<span class="material-symbols-outlined">check</span>`
         checkBox.addEventListener("click", crossTask)
 
         let deleteButton = document.createElement("button")
         deleteButton.setAttribute("type", "button")
         deleteButton.classList.add("task-buttons")
-        deleteButton.innerText = `❌`
+        deleteButton.innerHTML = `<span class="material-symbols-outlined">delete</span>`
         deleteButton.addEventListener("click", removeTask)
 
         let editButton = document.createElement("button")
         editButton.setAttribute("type", "button")
         editButton.classList.add("task-buttons")
-        editButton.innerText = `✏️`
+        editButton.innerHTML = `<span class="material-symbols-outlined">edit</span>`
         editButton.addEventListener("click", editTask)
 
         let commentButton = document.createElement("button")
         commentButton.setAttribute("type", "button")
         commentButton.classList.add("task-buttons")
-        commentButton.innerHTML = `💬`
+        commentButton.innerHTML = `<span class="material-symbols-outlined">comment</span>`
         commentButton.addEventListener("click", commentTask)
 
         let shareButton = document.createElement("button")
         shareButton.setAttribute("type", "button")
         shareButton.classList.add("task-buttons")
-        shareButton.innerText = `🔗`
+        shareButton.innerHTML = `<span class="material-symbols-outlined">send</span>`
         shareButton.addEventListener("click", shareTask)
 
         taskButtonsDiv.append(checkBox, editButton, commentButton, deleteButton, shareButton)
@@ -75,6 +75,11 @@ const addTask = function(e) {
 }
 
 const commentTask = function(e) {
+
+    let taskCard = e.target.closest(".task-card")
+
+    // prevent duplicates
+    if (taskCard.querySelector(".comment-div")) return
 
     // CREATE COMMENT DIV
     let commentDiv = document.createElement("div")
@@ -108,7 +113,7 @@ const commentTask = function(e) {
     removeCommentButton.classList.add("comment-button")
     removeCommentButton.setAttribute("id", "discardComment")
     removeCommentButton.innerText = "Discard"
-    removeCommentButton.addEventListener("click", discardCommentFunc)
+    removeCommentButton.addEventListener("click", deleteComment)
 
 
     // APPEND ELEMENTS TO COMMENT DIV
@@ -191,7 +196,11 @@ const editTask = function(e) {
 }
 
 const discardCommentFunc = function(e) {
-    e.target.closest(".comment-div")?.remove()
+    e.target.parentElement.parentElement.remove()
+}
+
+const deleteComment = function(e) {
+    e.target.parentElement.parentElement.remove()
 }
 
 const modifyComment = function(e) {
@@ -225,7 +234,36 @@ const modifyComment = function(e) {
     let removeCommentButton = document.createElement("button")
     removeCommentButton.innerText = "Cancel"
     removeCommentButton.classList.add("new-comment-action-buttons")
-    removeCommentButton.addEventListener("click", discardCommentFunc)
+    removeCommentButton.addEventListener("click", function() { 
+        
+        let originalCommentDiv = document.createElement("div")
+        originalCommentDiv.classList.add("new-comment-div")
+
+        let originalText = document.createElement("p")
+        originalText.innerText = oldText
+        originalText.classList.add("comment-created")
+
+        let buttonsDiv = document.createElement("div")
+        buttonsDiv.classList.add("new-comment-buttons-div")
+
+        let modifyBtn = document.createElement("button")
+        modifyBtn.classList.add("new-comment-action-buttons")
+        modifyBtn.innerText = "Modify"
+        modifyBtn.addEventListener("click", modifyComment)
+
+        let deleteBtn = document.createElement("button")
+        deleteBtn.classList.add("new-comment-action-buttons")
+        deleteBtn.innerText = "Delete"
+        deleteBtn.addEventListener("click", deleteComment)
+
+        buttonsDiv.append(modifyBtn, deleteBtn)
+        originalCommentDiv.append(originalText, buttonsDiv)
+
+        // restore original comment
+        commentDiv.replaceWith(originalCommentDiv)
+        }
+
+    )
 
     commentButtonsDiv.append(submitCommentButton, removeCommentButton)
     commentDiv.append(commentInput, commentButtonsDiv)
@@ -268,7 +306,7 @@ const submitComment = function(e) {
         let deleteCommentButton = document.createElement("button")
         deleteCommentButton.classList.add("new-comment-action-buttons")
         deleteCommentButton.innerText = "Delete"
-        deleteCommentButton.addEventListener("click", discardCommentFunc)
+        deleteCommentButton.addEventListener("click", deleteComment)
 
 
         //APPENDING ELEMENTS TO THEIR DIV

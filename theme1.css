@@ -49,6 +49,14 @@ header h1 {
   padding: 0;
 }
 
+.material-symbols-outlined {
+  font-variation-settings:
+    "FILL" 0,
+    "wght" 400,
+    "GRAD" 0,
+    "opsz" 24;
+}
+
 main {
   width: 100%;
   min-height: 50%;
@@ -146,15 +154,19 @@ footer {
 /* TASK BUTTONS */
 
 .task-buttons-div {
+  width: 100%;
   display: flex;
   flex-direction: row;
+  justify-content: space-evenly;
   flex-wrap: nowrap;
-  padding: 20px 0;
+  padding: 10px 0;
 }
 
 .task-buttons {
-  width: 35px;
-  height: 35px;
+  min-width: 30px;
+  min-height: 30px;
+  max-width: 35px;
+  max-height: 35px;
   background-color: white;
   border: 1px solid white;
   border-radius: 5px;
@@ -177,7 +189,15 @@ footer {
   flex-direction: column;
   background-color: rgba(255, 255, 255, 0.477);
   border: rgba(128, 128, 128, 0.31);
-  border-radius: 10px;
+  border-radius: 5px;
+  box-sizing: border-box;
+  min-height: 40px;
+  display: flex;
+  flex-direction: column;
+  justify-content: left;
+  align-items: center;
+  margin: 20px 0;
+  box-shadow: 0 0 5px 1px rgba(0, 0, 0, 0.111);
 }
 
 .task-main {
@@ -193,26 +213,26 @@ footer {
 .task-main > p {
   font-size: 26px;
   margin: 0;
-  font-weight: bold;
-  padding: 5px;
   text-align: center;
+  padding: 10px 5px;
 }
 
 .comment-div {
-  width: 100%;
-  height: 65%;
+  width: 95%;
+  height: 40%;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: left;
-  padding: 2px;
+  padding-top: 15px;
+  border-top: 1px solid rgb(205, 205, 205);
   margin: 0 5px;
 }
 
 .comment-input {
   flex: 1;
   height: 35px;
-  width: 95%;
+  width: 90%;
   box-sizing: border-box;
   display: inline-block;
   border: 1px solid white;
@@ -264,7 +284,7 @@ footer {
 }
 
 .new-comment-div {
-  width: 100%;
+  width: 95%;
   box-sizing: border-box;
   display: flex;
   justify-content: space-between;
@@ -274,6 +294,7 @@ footer {
 .new-comment-div p {
   min-width: 50%;
   text-align: left;
+  padding-left: 10px;
 }
 
 .comment-created {
@@ -294,6 +315,7 @@ footer {
   border: none;
   cursor: pointer;
   font-family: "Quicksand", sans-serif;
+  font-size: 16px;
   color: purple;
   font-weight: bold;
   margin: 0 5px;
@@ -305,19 +327,6 @@ ul {
   padding: 0;
   list-style: none;
   box-sizing: border-box;
-}
-
-ul li {
-  box-sizing: border-box;
-  min-height: 40px;
-  width: 100%;
-  padding: 5px 10px;
-  display: flex;
-  flex-direction: column;
-  justify-content: left;
-  align-items: center;
-  margin: 20px 0;
-  box-shadow: 0 0 5px 1px rgba(0, 0, 0, 0.111);
 }
 
 .task-crossed {
