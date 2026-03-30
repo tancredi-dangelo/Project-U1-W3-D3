@@ -3,6 +3,47 @@ const button = document.getElementById("submitButton")
 const input = document.getElementById("taskInput")
 const taskList = document.getElementById("taskList")
 
+// calendar
+
+const calendarTrack = document.querySelector(".calendar-track")
+
+const generateCalendar = () => {
+    const today = new Date()
+
+    for (let i = -14; i <= 14; i++) {
+        let date = new Date()
+        date.setDate(today.getDate() + i)
+
+        let dayDiv = document.createElement("div")
+        dayDiv.classList.add("calendar-day")
+
+        let dayName = date.toLocaleDateString("en-US", { weekday: "short" })
+        let dayNumber = date.getDate()
+
+        dayDiv.innerHTML = `
+            <p>${dayName}</p>
+            <strong>${dayNumber}</strong>
+        `
+
+        // highlight today
+        if (i === 0) {
+            dayDiv.classList.add("active")
+        }
+
+        // click to select
+        dayDiv.addEventListener("click", () => {
+            document.querySelectorAll(".calendar-day").forEach(d => d.classList.remove("active"))
+            dayDiv.classList.add("active")
+        })
+
+        calendarTrack.appendChild(dayDiv)
+    }
+}
+
+generateCalendar()
+
+
+
 input.addEventListener("input", () => {
   input.style.height = "auto";
   input.style.height = input.scrollHeight + "px";
@@ -32,6 +73,7 @@ const addTask = function(e) {
         let checkBox = document.createElement("button") 
         checkBox.setAttribute("type", "button")
         checkBox.classList.add("task-buttons")
+        checkBox.classList.add("check-btn")
         checkBox.innerHTML = `<span class="material-symbols-outlined">check</span>`
         checkBox.addEventListener("click", crossTask)
 
@@ -50,7 +92,7 @@ const addTask = function(e) {
         let commentButton = document.createElement("button")
         commentButton.setAttribute("type", "button")
         commentButton.classList.add("task-buttons")
-        commentButton.innerHTML = `<span class="material-symbols-outlined">comment</span>`
+        commentButton.innerHTML = `<span class="material-symbols-outlined">add_comment</span>`
         commentButton.addEventListener("click", commentTask)
 
         let shareButton = document.createElement("button")
@@ -128,10 +170,58 @@ const crossTask = function(e) {
     let task = e.target.closest(".task-card")
     let taskToCross = task.querySelector("p")
     taskToCross.classList.toggle("task-crossed")
+    task.classList.toggle("task-done")
 }
 
 const removeTask = function(e) {
-    e.target.closest(".task-card").remove()
+
+    let taskCard = e.target.closest(".task-card")
+
+    // Save original content (so we can restore it if "No")
+    let originalContent = taskCard.innerHTML
+
+    // Clear the card
+    taskCard.innerHTML = ""
+
+    // Create confirmation text
+    let confirmText = document.createElement("p")
+    confirmText.innerText = "Are you sure?"
+
+    // Buttons container
+    let confirmButtons = document.createElement("div")
+    confirmButtons.classList.add("comment-buttons-div")
+
+    // YES button
+    let yesBtn = document.createElement("button")
+    yesBtn.innerText = "Yes"
+    yesBtn.classList.add("new-comment-action-buttons")
+
+    yesBtn.addEventListener("click", function() {
+        taskCard.remove()
+    })
+
+    // NO button
+    let noBtn = document.createElement("button")
+    noBtn.innerText = "No"
+    noBtn.classList.add("new-comment-action-buttons")
+
+    noBtn.addEventListener("click", function() {
+        taskCard.innerHTML = originalContent
+
+        // reattach event listeners!
+        reattachTaskEvents(taskCard)
+    })
+
+    confirmButtons.append(yesBtn, noBtn)
+    taskCard.append(confirmText, confirmButtons)
+}
+
+const reattachTaskEvents = function(taskCard) {
+    taskCard.querySelector(".task-buttons:nth-child(1)")?.addEventListener("click", crossTask)
+    taskCard.querySelector(".task-buttons:nth-child(2)")?.addEventListener("click", editTask)
+    taskCard.querySelector(".task-buttons:nth-child(3)")?.addEventListener("click", commentTask)
+    taskCard.querySelector(".task-buttons:nth-child(4)")?.addEventListener("click", removeTask)
+    taskCard.querySelector(".task-buttons:nth-child(5)")?.addEventListener("click", shareTask)
 }
 
 const shareTask = function(e) {
