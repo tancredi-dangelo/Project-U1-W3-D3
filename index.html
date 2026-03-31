@@ -33,8 +33,21 @@
         </div>
         <div id="calendar-expand">
           <h4>
-            <a href="#">Open Calendar</a>
+            <a href="#" id="openCalendarBtn">Open Calendar</a>
           </h4>
+          <div id="calendarModal" class="calendar-modal">
+            <div class="calendar-content">
+              <div class="calendar-header">
+                <button id="prevMonth">◀</button>
+                <h3 id="monthYear"></h3>
+                <button id="nextMonth">▶</button>
+              </div>
+              <div class="calendar-weekdays" id="weekDays"></div>
+              <div class="calendar-days" id="calendarDays"></div>
+
+              <button id="closeCalendarBtn">Close</button>
+            </div>
+          </div>
           <span class="material-symbols-outlined"> calendar_month </span>
         </div>
       </div>

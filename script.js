@@ -7,6 +7,8 @@ const taskList = document.getElementById("taskList")
 
 const calendarTrack = document.querySelector(".calendar-track")
 
+// CREATE STATIC CALENDARE DIV
+
 const generateCalendar = () => {
     const today = new Date()
 
@@ -42,13 +44,101 @@ const generateCalendar = () => {
 
 generateCalendar()
 
+// CREATE CALENDAR POP UP
 
+const modal = document.getElementById("calendarModal");
+const openBtn = document.getElementById("openCalendarBtn");
+const closeBtn = document.getElementById("closeCalendarBtn");
+
+const daysContainer = document.getElementById("calendarDays");
+const monthYear = document.getElementById("monthYear");
+const weekDaysDiv = document.getElementById("weekDays")
+
+const weekDays = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"]
+
+let currentDate = new Date();
+let selectedDate = null;
+
+/* OPEN / CLOSE  Calendar*/
+openBtn.onclick = () => modal.classList.add("active");
+closeBtn.onclick = () => modal.classList.remove("active");
+
+/* Render calendar */
+function renderCalendar(date) {
+  daysContainer.innerHTML = "";
+
+  const year = date.getFullYear();
+  const month = date.getMonth();
+
+  let firstDay = new Date(year, month, 1).getDay()
+  firstDay = firstDay === 0 ? 6 : firstDay - 1;
+
+  const lastDate = new Date(year, month + 1, 0).getDate();
+
+  monthYear.textContent = date.toLocaleString("default", {
+    month: "long",
+    year: "numeric"
+  });
+
+  // empty slots
+  for (let i = 0; i < firstDay; i++) {
+    daysContainer.innerHTML += `<div></div>`;
+  }
+
+  for (let i = 1; i <= lastDate; i++) {
+    const day = document.createElement("div");
+    day.classList.add("popup-calendar-day");
+    day.textContent = i;
+
+    const today = new Date();
+
+    if (
+      i === today.getDate() &&
+      month === today.getMonth() &&
+      year === today.getFullYear()
+    ) {
+      day.classList.add("today");
+    }
+
+    day.onclick = () => {
+      selectedDate = new Date(year, month, i);
+      document.getElementById("selectedDate").value =
+        selectedDate.toLocaleDateString();
+
+      modal.classList.remove("active");
+      renderCalendar(currentDate);
+    };
+
+    daysContainer.appendChild(day);
+  }
+}
+
+/* navigation in calendar */
+document.getElementById("prevMonth").onclick = () => {
+  currentDate.setMonth(currentDate.getMonth() - 1);
+  renderCalendar(currentDate);
+};
+
+document.getElementById("nextMonth").onclick = () => {
+  currentDate.setMonth(currentDate.getMonth() + 1);
+  renderCalendar(currentDate);
+};
+
+/* initialize */
+renderCalendar(currentDate);
+
+
+
+// TASK INPUT CAN SCROLL DOWN AS TEXT EXPANDS
 
 input.addEventListener("input", () => {
   input.style.height = "auto";
   input.style.height = input.scrollHeight + "px";
   input.classList.remove("error"); 
 });
+
+
+// ADD A TASK FUNCTION
 
 const addTask = function(e) {
 
