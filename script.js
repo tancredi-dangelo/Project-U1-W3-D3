@@ -5,129 +5,176 @@ const taskList = document.getElementById("taskList")
 
 // calendar
 
-const calendarTrack = document.querySelector(".calendar-track")
+// =========================
+// GLOBAL STATE
+// =========================
+const calendarTrack = document.querySelector(".calendar-track");
 
-// CREATE STATIC CALENDARE DIV
+let selectedDate = new Date(); // single source of truth
+let selectedQuickDay = null;
 
+// =========================
+// QUICK TRACKER
+// =========================
 const generateCalendar = () => {
-    const today = new Date()
+    calendarTrack.innerHTML = "";
+
+    const centerDate = new Date(selectedDate);
+    const today = new Date();
 
     for (let i = -14; i <= 14; i++) {
-        let date = new Date()
-        date.setDate(today.getDate() + i)
+        let date = new Date(centerDate);
+        date.setDate(centerDate.getDate() + i);
 
-        let dayDiv = document.createElement("div")
-        dayDiv.classList.add("calendar-day")
+        let dayDiv = document.createElement("div");
+        dayDiv.classList.add("calendar-day");
 
-        let dayName = date.toLocaleDateString("en-US", { weekday: "short" })
-        let dayNumber = date.getDate()
+        let dayName = date.toLocaleDateString("en-US", { weekday: "short" });
+        let dayNumber = date.getDate();
 
         dayDiv.innerHTML = `
             <p>${dayName}</p>
             <strong>${dayNumber}</strong>
-        `
+        `;
 
-        // highlight today
-        if (i === 0) {
-            dayDiv.classList.add("active")
+        // 🔴 Always mark TODAY
+        if (date.toDateString() === today.toDateString()) {
+            dayDiv.classList.add("today-border");
         }
 
-        // click to select
+        // 🔵 Selected day
+        if (date.toDateString() === selectedDate.toDateString()) {
+            dayDiv.classList.add("active");
+            selectedQuickDay = dayDiv;
+        }
+
+        // Click selection
         dayDiv.addEventListener("click", () => {
-            document.querySelectorAll(".calendar-day").forEach(d => d.classList.remove("active"))
-            dayDiv.classList.add("active")
-        })
+            selectedDate = new Date(date);
+            generateCalendar(); // re-render & re-center
+        });
 
-        calendarTrack.appendChild(dayDiv)
+        dayDiv.dataset.date = date.toDateString();
+        calendarTrack.appendChild(dayDiv);
     }
-}
 
-generateCalendar()
+    // 🎯 Center selected day
+    setTimeout(() => {
+        if (selectedQuickDay) {
+            selectedQuickDay.scrollIntoView({
+                behavior: "smooth",
+                inline: "center",
+                block: "nearest"
+            });
+        }
+    }, 50);
+};
 
-// CREATE CALENDAR POP UP
+generateCalendar();
 
+// =========================
+// POPUP CALENDAR
+// =========================
 const modal = document.getElementById("calendarModal");
 const openBtn = document.getElementById("openCalendarBtn");
 const closeBtn = document.getElementById("closeCalendarBtn");
 
 const daysContainer = document.getElementById("calendarDays");
 const monthYear = document.getElementById("monthYear");
-const weekDaysDiv = document.getElementById("weekDays")
 
-const weekDays = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"]
+const weekDays = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
 
 let currentDate = new Date();
-let selectedDate = null;
 
-/* OPEN / CLOSE  Calendar*/
+// =========================
+// OPEN / CLOSE
+// =========================
 openBtn.onclick = () => modal.classList.add("active");
 closeBtn.onclick = () => modal.classList.remove("active");
 
-/* Render calendar */
+// =========================
+// RENDER POPUP CALENDAR
+// =========================
 function renderCalendar(date) {
-  daysContainer.innerHTML = "";
+    daysContainer.innerHTML = "";
 
-  const year = date.getFullYear();
-  const month = date.getMonth();
+    const year = date.getFullYear();
+    const month = date.getMonth();
 
-  let firstDay = new Date(year, month, 1).getDay()
-  firstDay = firstDay === 0 ? 6 : firstDay - 1;
+    let firstDay = new Date(year, month, 1).getDay();
+    firstDay = firstDay === 0 ? 6 : firstDay - 1;
 
-  const lastDate = new Date(year, month + 1, 0).getDate();
+    const lastDate = new Date(year, month + 1, 0).getDate();
 
-  monthYear.textContent = date.toLocaleString("default", {
-    month: "long",
-    year: "numeric"
-  });
+    monthYear.textContent = date.toLocaleString("default", {
+        month: "long",
+        year: "numeric"
+    });
 
-  // empty slots
-  for (let i = 0; i < firstDay; i++) {
-    daysContainer.innerHTML += `<div></div>`;
-  }
+    // Weekdays header
+    weekDays.forEach(day => {
+        const el = document.createElement("div");
+        el.innerHTML = `<h4>${day}</h4>`;
+        daysContainer.appendChild(el);
+    });
 
-  for (let i = 1; i <= lastDate; i++) {
-    const day = document.createElement("div");
-    day.classList.add("popup-calendar-day");
-    day.textContent = i;
+    // Empty slots
+    for (let i = 0; i < firstDay; i++) {
+        daysContainer.appendChild(document.createElement("div"));
+    }
 
     const today = new Date();
 
-    if (
-      i === today.getDate() &&
-      month === today.getMonth() &&
-      year === today.getFullYear()
-    ) {
-      day.classList.add("today");
+    for (let i = 1; i <= lastDate; i++) {
+        const day = document.createElement("div");
+        day.classList.add("popup-calendar-day");
+        day.textContent = i;
+
+        const thisDate = new Date(year, month, i);
+
+        // Today highlight
+        if (thisDate.toDateString() === today.toDateString()) {
+            day.classList.add("today");
+        }
+
+        // Selected highlight (optional but recommended)
+        if (thisDate.toDateString() === selectedDate.toDateString()) {
+            day.classList.add("active");
+        }
+
+        day.onclick = () => {
+            selectedDate = new Date(thisDate);
+
+            document.getElementById("selectedDate").value =
+                selectedDate.toLocaleDateString();
+
+            modal.classList.remove("active");
+
+            renderCalendar(currentDate);
+            generateCalendar(); // 🔥 sync quick tracker
+        };
+
+        daysContainer.appendChild(day);
     }
-
-    day.onclick = () => {
-      selectedDate = new Date(year, month, i);
-      document.getElementById("selectedDate").value =
-        selectedDate.toLocaleDateString();
-
-      modal.classList.remove("active");
-      renderCalendar(currentDate);
-    };
-
-    daysContainer.appendChild(day);
-  }
 }
 
-/* navigation in calendar */
+// =========================
+// NAVIGATION
+// =========================
 document.getElementById("prevMonth").onclick = () => {
-  currentDate.setMonth(currentDate.getMonth() - 1);
-  renderCalendar(currentDate);
+    currentDate.setMonth(currentDate.getMonth() - 1);
+    renderCalendar(currentDate);
 };
 
 document.getElementById("nextMonth").onclick = () => {
-  currentDate.setMonth(currentDate.getMonth() + 1);
-  renderCalendar(currentDate);
+    currentDate.setMonth(currentDate.getMonth() + 1);
+    renderCalendar(currentDate);
 };
 
-/* initialize */
+// =========================
+// INIT
+// =========================
 renderCalendar(currentDate);
-
-
 
 // TASK INPUT CAN SCROLL DOWN AS TEXT EXPANDS
 

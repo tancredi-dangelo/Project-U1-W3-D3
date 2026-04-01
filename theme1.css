@@ -176,6 +176,14 @@ footer {
   padding: 10px 0;
 }
 
+.task-buttons-div button:nth-of-type(1) {
+  box-shadow: 0 0 3px 2px rgb(117, 255, 117);
+}
+
+.task-buttons-div button:nth-of-type(4) {
+  box-shadow: 0 0 3px 1px rgb(255, 79, 79);
+}
+
 .task-buttons {
   min-width: 30px;
   min-height: 30px;
@@ -358,10 +366,6 @@ ul {
   opacity: 0.4;
 }
 
-.task-done .check-btn {
-  opacity: 1;
-}
-
 /*  CALENDAR  */
 
 .calendar-wrapper {
@@ -472,6 +476,21 @@ ul {
   align-items: center;
 }
 
+.calendar-header h3 {
+  font-size: 24px;
+}
+
+.calendar-header button {
+  background-color: white;
+  width: 40px;
+  height: 40px;
+  border: none;
+  border-radius: 5px;
+  font-size: 20px;
+  color: rgb(167, 167, 167);
+  box-shadow: 0 0 2px 1px rgba(128, 128, 128, 0.629);
+}
+
 /* GRID */
 .calendar-weekdays {
   display: grid;
@@ -487,17 +506,17 @@ ul {
 
 .calendar-days {
   width: 100%;
-  height: 50%;
+  height: 70%;
   box-sizing: border-box;
   display: grid;
   grid-template-columns: repeat(7, 1fr);
   gap: 5px;
 }
 
-.popup-calendar-day {
+.calendar-days h4 {
   box-sizing: border-box;
   width: 100%;
-  height: 100%;
+  height: 90%;
   margin: 5px;
   border-radius: 8px;
   cursor: pointer;
@@ -506,15 +525,33 @@ ul {
   justify-content: center;
 }
 
-.calendar-day:hover {
+.calendar-days div {
+  box-sizing: border-box;
+  width: 40px;
+  height: 40px;
+  border-radius: 8px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+}
+
+.popup-calendar-day:hover {
   background: #eee;
 }
 
-.calendar-day.today {
+.popup-calendar-day.today {
   border: 1px solid rgb(100, 100, 100);
 }
 
-.calendar-day.selected {
+.popup-calendar-day.selected {
   background: black;
   color: white;
+}
+
+.calendar-buttons-div {
+  display: flex;
+  height: 50px;
+  margin: 20px auto;
 }
