@@ -304,7 +304,7 @@ const commentTask = function(e) {
 }
 
 const crossTask = function(e) {
-    let task = e.target.closest(".task-card")
+    let task = e.target.closest(".")
     let taskToCross = task.querySelector("p")
     taskToCross.classList.toggle("task-crossed")
     task.classList.toggle("task-done")
