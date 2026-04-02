@@ -1,8 +1,9 @@
 const form = document.getElementById("taskForm")
-const button = document.getElementById("submitButton")
+const submitButton = document.getElementById("submitButton")
+const timeScheduleButton = document.getElementById("timeScheduleButton")
 const input = document.getElementById("taskInput")
 const taskList = document.getElementById("taskList")
-
+const textarea = document.getElementsByTagName("textarea")
 // calendar
 
 // =========================
@@ -178,11 +179,11 @@ renderCalendar(currentDate);
 
 // TASK INPUT CAN SCROLL DOWN AS TEXT EXPANDS
 
-input.addEventListener("input", () => {
-  input.style.height = "auto";
-  input.style.height = input.scrollHeight + "px";
-  input.classList.remove("error"); 
-});
+Array.from(textarea).forEach((area) => area.addEventListener("input", () => {
+  area.style.height = "auto";
+  area.style.height = input.scrollHeight + "px";
+  area.classList.remove("error"); 
+}));
 
 
 // ADD A TASK FUNCTION
@@ -266,7 +267,7 @@ const commentTask = function(e) {
     commentDiv.classList.add("comment-div")
      
     //CREATE COMMENT INPUT
-    let commentInput = document.createElement("input")
+    let commentInput = document.createElement("textarea")
     commentInput.type = "text"
     commentInput.placeholder = "write a comment..."
     commentInput.classList.add("comment-input")
@@ -304,7 +305,7 @@ const commentTask = function(e) {
 }
 
 const crossTask = function(e) {
-    let task = e.target.closest(".")
+    let task = e.target.closest(".task-card")
     let taskToCross = task.querySelector("p")
     taskToCross.classList.toggle("task-crossed")
     task.classList.toggle("task-done")
@@ -442,7 +443,7 @@ const modifyComment = function(e) {
     let commentDiv = document.createElement("div")
     commentDiv.classList.add("comment-div")
 
-    let commentInput = document.createElement("input")
+    let commentInput = document.createElement("textarea")
     commentInput.type = "text"
     commentInput.classList.add("comment-input")
     commentInput.value = oldText  
@@ -553,4 +554,7 @@ const submitComment = function(e) {
 
 }
 
-button.addEventListener("click", addTask)
+submitButton.addEventListener("click", addTask)
+timeScheduleButton.onclick = function() {
+    this.classList.toggle("buttonActive")
+}

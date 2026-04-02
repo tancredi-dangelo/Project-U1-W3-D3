@@ -1,13 +1,13 @@
 html {
   height: 100%;
   width: 100%;
-  min-width: 400px;
+  min-width: 320px;
 }
 
 body {
   width: 100%;
   height: 100%;
-  min-width: 400px;
+  min-width: 320px;
   background: #e3ffb2;
   background: linear-gradient(315deg, #e3ffb2, #96f9edb3);
   background-attachment: fixed;
@@ -52,7 +52,7 @@ header h1 {
 .material-symbols-outlined {
   font-variation-settings:
     "FILL" 0,
-    "wght" 400,
+    "wght" 500,
     "GRAD" 0,
     "opsz" 24;
 }
@@ -85,6 +85,11 @@ h4 a {
   color: purple;
 }
 
+textarea {
+  resize: none;
+  overflow: hidden;
+}
+
 p {
   flex: 1 1 0; /* allow shrinking below content width */
   min-width: 0; /* REQUIRED for flex items to shrink properly */
@@ -111,22 +116,29 @@ footer {
   justify-content: space-evenly;
 }
 
+#taskForm div {
+  display: flex;
+}
+
 #taskInput {
-  width: 80%;
-  min-height: 50px;
+  width: 85%;
+  height: 45px;
   margin-bottom: 5px;
-  padding: 5px;
+  padding: 10px;
   box-sizing: border-box;
-  font-size: 16px;
-  line-height: 1.4;
-  overflow: hidden; /* hide scrollbar while expanding */
-  resize: none; /* prevent manual resizing */
+  font-size: 20px;
+  line-height: 1.2;
+  overflow: hidden;
+  resize: none;
   display: flex;
   align-items: center;
   justify-content: flex-start;
   color: rgb(49, 49, 49);
-  padding: 0 10px; /* horizontal padding */
-  line-height: 50px; /* match the input height */
+  font-family: "Quicksand", sans-serif;
+  font-weight: bold;
+  box-shadow: 0 0 5px 1px rgba(0, 0, 0, 0.111);
+  border: none;
+  border-radius: 10px;
 }
 
 #taskInput:focus {
@@ -134,34 +146,46 @@ footer {
   border: none;
 }
 
-#submitButton {
+#submitButton,
+#timeScheduleButton {
   width: 50%;
-  max-width: 160px;
+  max-width: 250px;
+  height: 40px;
   background-color: rgb(255, 255, 135);
-  font-size: 20%;
+  cursor: pointer;
+  margin: 5px;
+  font-family: sans-serif;
+  font-size: 20px;
   color: grey;
   font-weight: bold;
-  cursor: pointer;
-  margin-top: 5px;
+  box-sizing: border-box;
+  border: none;
+  border-radius: 10px;
+  padding: 0 10px;
+  vertical-align: middle;
+  font-family: "Quicksand", sans-serif;
+  box-shadow: 0 0 5px 1px rgba(0, 0, 0, 0.111);
 }
 
 #submitButton:hover {
   background-color: rgb(255, 255, 88);
 }
 
-#taskInput,
-#submitButton {
-  font-family: sans-serif;
-  font-size: 20px;
-  box-sizing: border-box;
-  height: 40px;
-  border: none;
-  border-radius: 10px;
-  padding: 0 10px;
-  vertical-align: middle;
-  font-family: "Quicksand", sans-serif;
-  font-weight: bold;
-  box-shadow: 0 0 5px 1px rgba(0, 0, 0, 0.111);
+#timeScheduleButton {
+  font-size: 14px;
+  max-width: 200px;
+  color: rgba(131, 131, 131, 0.363);
+  background-color: rgba(255, 255, 255, 0.075);
+}
+
+#timeScheduleButton:hover {
+  color: grey;
+  background-color: rgb(255, 255, 135);
+}
+
+.buttonActive {
+  color: grey;
+  background-color: rgb(255, 255, 135);
 }
 
 /* TASK BUTTONS */
@@ -171,7 +195,7 @@ footer {
   max-height: 40%;
   display: flex;
   flex-direction: row;
-  justify-content: space-evenly;
+  justify-content: center;
   flex-wrap: nowrap;
   padding: 10px 0;
 }
@@ -234,7 +258,7 @@ footer {
 .task-main > p {
   height: 60%;
   font-size: 26px;
-  margin: 0;
+  margin: 0 10px;
   text-align: center;
   padding: 10px 5px;
 }
@@ -362,8 +386,18 @@ ul {
   box-shadow: 0 0 5px 1px rgb(255, 73, 73);
 }
 
-.task-done .task-main > * {
+.task-done > * {
   opacity: 0.4;
+}
+
+.task-done > .task-main > .task-buttons-div > button {
+  opacity: 1;
+}
+
+.task-done > .task-main > .task-buttons-div > button:nth-of-type(2),
+.task-done > .task-main > .task-buttons-div > button:nth-of-type(3),
+.task-done > .task-main > .task-buttons-div > button:nth-of-type(5) {
+  display: none;
 }
 
 /*  CALENDAR  */
@@ -394,6 +428,13 @@ ul {
   height: auto;
   display: flex;
   gap: 15px;
+  overflow-x: auto;
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none;
+}
+
+.calendar-track::-webkit-scrollbar {
+  display: none; /* Chrome, Safari */
 }
 
 .calendar-day {
@@ -464,7 +505,8 @@ ul {
   background: white;
   padding: 20px;
   border-radius: 12px;
-  width: 320px;
+  min-width: 300px;
+  max-width: 500px;
   height: 500px;
   display: flex;
   flex-direction: column;
