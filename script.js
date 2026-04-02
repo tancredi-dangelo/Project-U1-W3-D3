@@ -214,7 +214,7 @@ const addTask = function(e) {
         checkBox.classList.add("check-btn")
         checkBox.innerHTML = `<span class="material-symbols-outlined">check</span>`
         checkBox.addEventListener("click", crossTask)
-
+        
         let deleteButton = document.createElement("button")
         deleteButton.setAttribute("type", "button")
         deleteButton.classList.add("task-buttons")
@@ -263,12 +263,11 @@ const commentTask = function(e) {
 
     // CREATE COMMENT DIV
     let commentDiv = document.createElement("div")
-    commentDiv.style.display = "none"
+    commentDiv.classList.add("hidden")
     commentDiv.classList.add("comment-div")
      
-    //CREATE COMMENT INPUT
+    //CREATE COMMENT INPUT !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
     let commentInput = document.createElement("textarea")
-    commentInput.type = "text"
     commentInput.placeholder = "write a comment..."
     commentInput.classList.add("comment-input")
 
@@ -284,7 +283,7 @@ const commentTask = function(e) {
     let submitCommentButton = document.createElement("button")
     submitCommentButton.type = "button"
     submitCommentButton.classList.add("comment-button")
-    submitCommentButton.innerText = "Add"
+    submitCommentButton.innerText = "Add Comment"
     submitCommentButton.addEventListener("click", submitComment)
 
     //CREATE DISCARD COMMENT BUTTON
@@ -300,17 +299,31 @@ const commentTask = function(e) {
     commentButtonsDiv.append(submitCommentButton, removeCommentButton)
 
     commentDiv.append(commentInput, commentButtonsDiv)
-    commentDiv.style.display = "block"
+    commentDiv.classList.remove("hidden")
     e.target.closest(".task-card").append(commentDiv)
 }
 
+
+// TASK DONE
 const crossTask = function(e) {
+
     let task = e.target.closest(".task-card")
+    task.classList.toggle("opaque")
+    task.querySelector(".comment-div").classList.toggle("hidden")
+
     let taskToCross = task.querySelector("p")
     taskToCross.classList.toggle("task-crossed")
-    task.classList.toggle("task-done")
+
+    // HIDE BUTTONS WHEN TASK DONE
+    const divs = task.querySelectorAll(".task-buttons-div");
+
+    divs[1]?.classList.toggle("hidden");
+    divs[2]?.classList.toggle("hidden");
+    divs[4]?.classList.toggle("hidden");
 }
 
+
+// REMOVE TASK
 const removeTask = function(e) {
 
     let taskCard = e.target.closest(".task-card")
@@ -354,6 +367,8 @@ const removeTask = function(e) {
     taskCard.append(confirmText, confirmButtons)
 }
 
+
+// REATTACH EVENT LISTENERS
 const reattachTaskEvents = function(taskCard) {
     taskCard.querySelector(".task-buttons:nth-child(1)")?.addEventListener("click", crossTask)
     taskCard.querySelector(".task-buttons:nth-child(2)")?.addEventListener("click", editTask)
@@ -373,8 +388,7 @@ const editTask = function(e) {
     let oldText = taskTextElement.innerText
 
     // CREATE INPUT
-    let editInput = document.createElement("input")
-    editInput.type = "text"
+    let editInput = document.createElement("textarea")
     editInput.value = oldText
     editInput.classList.add("comment-input")
     editInput.setAttribute("style", "margin-top: 20px;")
