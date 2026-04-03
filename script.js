@@ -309,7 +309,9 @@ const crossTask = function(e) {
 
     let task = e.target.closest(".task-card")
     task.classList.toggle("opaque")
-    task.querySelector(".comment-div").classList.toggle("hidden")
+
+    let commentDiv = document.querySelector(".comment-div")
+    commentDiv.classList.toggle("hidden")
 
     let taskToCross = task.querySelector("p")
     taskToCross.classList.toggle("task-crossed")
