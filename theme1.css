@@ -106,6 +106,12 @@ footer {
 
 /*  INPUT NEW TASK */
 
+#taskList.schedule-mode {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-template-rows: repeat(24, 1fr);
+}
+
 #taskForm {
   width: 100%;
   min-height: 100px;
@@ -201,16 +207,18 @@ footer {
 }
 
 .task-buttons-div button:nth-of-type(1) {
+  border: 1px solid rgb(117, 255, 117);
   box-shadow: 0 0 3px 2px rgb(117, 255, 117);
 }
 
 .task-buttons-div button:nth-of-type(4) {
-  box-shadow: 0 0 3px 1px rgb(255, 79, 79);
+  border: 1px solid rgb(255, 79, 79);
+  box-shadow: 0 0 3px 1.5px rgb(255, 79, 79);
 }
 
 .task-buttons {
-  min-width: 30px;
-  min-height: 30px;
+  min-width: 20px;
+  min-height: 20px;
   max-width: 30px;
   max-height: 30px;
   background-color: white;

@@ -4,11 +4,11 @@ const timeScheduleButton = document.getElementById("timeScheduleButton")
 const input = document.getElementById("taskInput")
 const taskList = document.getElementById("taskList")
 const textarea = document.getElementsByTagName("textarea")
-// calendar
+let isScheduleActive = false
 
-// =========================
-// GLOBAL STATE
-// =========================
+
+// CALENDAR
+
 const calendarTrack = document.querySelector(".calendar-track");
 
 let selectedDate = new Date(); // single source of truth
@@ -18,6 +18,7 @@ let selectedQuickDay = null;
 // QUICK TRACKER
 // =========================
 const generateCalendar = () => {
+    
     calendarTrack.innerHTML = "";
 
     const centerDate = new Date(selectedDate);
@@ -73,9 +74,9 @@ const generateCalendar = () => {
 
 generateCalendar();
 
-// =========================
+
 // POPUP CALENDAR
-// =========================
+
 const modal = document.getElementById("calendarModal");
 const openBtn = document.getElementById("openCalendarBtn");
 const closeBtn = document.getElementById("closeCalendarBtn");
@@ -87,15 +88,15 @@ const weekDays = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
 
 let currentDate = new Date();
 
-// =========================
+
 // OPEN / CLOSE
-// =========================
+
 openBtn.onclick = () => modal.classList.add("active");
 closeBtn.onclick = () => modal.classList.remove("active");
 
-// =========================
+
 // RENDER POPUP CALENDAR
-// =========================
+
 function renderCalendar(date) {
     daysContainer.innerHTML = "";
 
@@ -159,9 +160,8 @@ function renderCalendar(date) {
     }
 }
 
-// =========================
+
 // NAVIGATION
-// =========================
 document.getElementById("prevMonth").onclick = () => {
     currentDate.setMonth(currentDate.getMonth() - 1);
     renderCalendar(currentDate);
@@ -172,10 +172,13 @@ document.getElementById("nextMonth").onclick = () => {
     renderCalendar(currentDate);
 };
 
-// =========================
+
 // INIT
-// =========================
+
 renderCalendar(currentDate);
+
+
+// -----------TASKS-------------- //
 
 // TASK INPUT CAN SCROLL DOWN AS TEXT EXPANDS
 
@@ -214,28 +217,32 @@ const addTask = function(e) {
         checkBox.classList.add("check-btn")
         checkBox.innerHTML = `<span class="material-symbols-outlined">check</span>`
         checkBox.addEventListener("click", crossTask)
-        
-        let deleteButton = document.createElement("button")
-        deleteButton.setAttribute("type", "button")
-        deleteButton.classList.add("task-buttons")
-        deleteButton.innerHTML = `<span class="material-symbols-outlined">delete</span>`
-        deleteButton.addEventListener("click", removeTask)
 
         let editButton = document.createElement("button")
         editButton.setAttribute("type", "button")
         editButton.classList.add("task-buttons")
+        editButton.classList.add("edit-btn")
         editButton.innerHTML = `<span class="material-symbols-outlined">edit</span>`
         editButton.addEventListener("click", editTask)
 
         let commentButton = document.createElement("button")
         commentButton.setAttribute("type", "button")
         commentButton.classList.add("task-buttons")
+        commentButton.classList.add("comment-btn")
         commentButton.innerHTML = `<span class="material-symbols-outlined">add_comment</span>`
         commentButton.addEventListener("click", commentTask)
+
+        let deleteButton = document.createElement("button")
+        deleteButton.setAttribute("type", "button")
+        deleteButton.classList.add("task-buttons")
+        deleteButton.classList.add("delete-btn")
+        deleteButton.innerHTML = `<span class="material-symbols-outlined">delete</span>`
+        deleteButton.addEventListener("click", removeTask)
 
         let shareButton = document.createElement("button")
         shareButton.setAttribute("type", "button")
         shareButton.classList.add("task-buttons")
+        shareButton.classList.add("share-btn")
         shareButton.innerHTML = `<span class="material-symbols-outlined">send</span>`
         shareButton.addEventListener("click", shareTask)
 
@@ -304,24 +311,27 @@ const commentTask = function(e) {
 }
 
 
-// TASK DONE
+// TASK DONE 
+
 const crossTask = function(e) {
 
     let task = e.target.closest(".task-card")
     task.classList.toggle("opaque")
 
-    let commentDiv = document.querySelector(".comment-div")
-    commentDiv.classList.toggle("hidden")
+    let commentDiv = task.querySelector(".comment-div")
+    if (commentDiv) {
+        commentDiv.classList.toggle("hidden")
+    }
 
-    let taskToCross = task.querySelector("p")
+    let taskToCross = task.querySelector(".task-main p")
     taskToCross.classList.toggle("task-crossed")
 
     // HIDE BUTTONS WHEN TASK DONE
-    const divs = task.querySelectorAll(".task-buttons-div");
+    const buttons = task.querySelectorAll(".task-buttons");
 
-    divs[1]?.classList.toggle("hidden");
-    divs[2]?.classList.toggle("hidden");
-    divs[4]?.classList.toggle("hidden");
+    task.querySelector(".edit-btn")?.classList.toggle("hidden");
+    task.querySelector(".comment-btn")?.classList.toggle("hidden");
+    task.querySelector(".share-btn")?.classList.toggle("hidden");
 }
 
 
@@ -573,4 +583,12 @@ const submitComment = function(e) {
 submitButton.addEventListener("click", addTask)
 timeScheduleButton.onclick = function() {
     this.classList.toggle("buttonActive")
+    if (!isScheduleActive) {
+        isScheduleActive = true
+        taskList.classList.add("schedule-mode")
+    } else {
+        isScheduleActive = false
+        taskList.classList.remove("schedule-mode")
+    }
+   
 }
