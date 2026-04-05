@@ -286,10 +286,11 @@ footer {
 /* MAIN TASK BUTTONS */
 
 .main-buttons-div {
-  max-width: 30%;
+  width: 30%;
+  max-width: 100px;
   display: flex;
   align-items: center;
-  justify-content: center;
+  justify-content: space-evenly;
   margin-left: 2.5px;
 }
 
@@ -311,7 +312,7 @@ footer {
 }
 
 .main-task-buttons span {
-  font-size: 20px;
+  font-size: 22px;
   color: rgb(72, 72, 72);
 }
 
