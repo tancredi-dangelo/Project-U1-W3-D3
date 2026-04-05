@@ -60,7 +60,7 @@ const generateCalendar = () => {
         calendarTrack.appendChild(dayDiv);
     }
 
-    // 🎯 Center selected day
+    // Center selected day
     setTimeout(() => {
         if (selectedQuickDay) {
             selectedQuickDay.scrollIntoView({
@@ -173,9 +173,11 @@ document.getElementById("nextMonth").onclick = () => {
 };
 
 
-// INIT
+// INITIALIZE CALENDAR
 
 renderCalendar(currentDate);
+
+
 
 
 // -----------TASKS-------------- //
@@ -184,7 +186,7 @@ renderCalendar(currentDate);
 
 Array.from(textarea).forEach((area) => area.addEventListener("input", () => {
   area.style.height = "auto";
-  area.style.height = input.scrollHeight + "px";
+  area.style.height = area.scrollHeight + "px";
   area.classList.remove("error"); 
 }));
 
@@ -221,7 +223,7 @@ const addTask = function(e) {
     let checkBtn = document.createElement("button");
     checkBtn.type = "button";
     checkBtn.classList.add("main-task-buttons", "check-btn");
-    checkBtn.innerHTML = `<span class="material-symbols-outlined">check</span>`;
+    checkBtn.innerHTML = `<span class="material-symbols-outlined">check_box</span>`;
     checkBtn.addEventListener("click", crossTask);
 
     // DELETE
@@ -254,16 +256,46 @@ const toggleTaskOptions = function(e) {
 
     let taskCard = e.currentTarget.closest(".task-card");
 
-    let existing = taskCard.querySelector(".expand-task-div");
+    let existingMenu = taskCard.querySelector(".expand-task-div");
 
-    // TOGGLE
-    if (existing) {
-        existing.remove();
+    let comments = taskCard.querySelectorAll(".new-comment-div");
+    let editContainer = taskCard.querySelector(".edit-comment-container");
+
+
+    // CLOSE MENU
+    if (existingMenu) {
+        existingMenu.remove();
+
+        // restore comments
+        comments.forEach(c => c.classList.remove("hidden"));
+
         return;
     }
 
+    // HANDLE COMMENT EDIT OPEN
+
+    if (editContainer) {
+        let commentContainer = editContainer.closest(".new-comment-div");
+
+        let textElement = commentContainer.querySelector("p");
+        let actionButtons = commentContainer.querySelector(".new-comment-buttons-div");
+
+        // remove editor
+        editContainer.remove();
+
+        // restore original UI
+        textElement.classList.remove("hidden");
+        if (actionButtons) actionButtons.classList.remove("hidden");
+    }
+
+    // HIDE COMMENTS
+    comments.forEach(c => c.classList.add("hidden"));
+
+    // CLOSE OTHER MENUS
     document.querySelectorAll(".expand-task-div").forEach(el => el.remove());
 
+
+    // CREATE MENU
     let expandTaskDiv = document.createElement("div");
     expandTaskDiv.classList.add("expand-task-div");
 
@@ -271,38 +303,39 @@ const toggleTaskOptions = function(e) {
     let editBtn = document.createElement("button");
     editBtn.type = "button";
     editBtn.classList.add("more-task-buttons", "edit-btn");
-    editBtn.innerHTML = `<p><span class="material-symbols-outlined">edit</span>  Edit</p>`;
+    editBtn.innerHTML = `<p><span class="material-symbols-outlined">edit</span> Edit</p>`;
     editBtn.addEventListener("click", editTask);
 
     // COMMENT
     let commentBtn = document.createElement("button");
     commentBtn.type = "button";
     commentBtn.classList.add("more-task-buttons", "comment-btn");
-    commentBtn.innerHTML = `<p><span class="material-symbols-outlined">add_comment</span>  Add Comment</p>`;
+    commentBtn.innerHTML = `<p><span class="material-symbols-outlined">add_comment</span> Add Comment</p>`;
     commentBtn.addEventListener("click", commentTask);
 
     // ADD TIME
     let addTimeBtn = document.createElement("button");
     addTimeBtn.type = "button";
     addTimeBtn.classList.add("more-task-buttons", "add-time-btn");
-    addTimeBtn.innerHTML = `<p><span class="material-symbols-outlined">nest_clock_farsight_analog</span>  Add time</p>`;
+    addTimeBtn.innerHTML = `<p><span class="material-symbols-outlined">nest_clock_farsight_analog</span> Add Time</p>`;
     addTimeBtn.addEventListener("click", addTimeToTask);
 
-    //MARK AS IMPORTANT
+    // IMPORTANT
     let markTaskImportantBtn = document.createElement("button");
     markTaskImportantBtn.type = "button";
     markTaskImportantBtn.classList.add("more-task-buttons", "mark-important-btn");
-    markTaskImportantBtn.innerHTML = `<p><span class="material-symbols-outlined">exclamation</span>  Mark as important</p>`;
+    markTaskImportantBtn.innerHTML = `<p><span class="material-symbols-outlined">exclamation</span> Mark As Important</p>`;
     markTaskImportantBtn.addEventListener("click", markTaskImportant);
 
     // SHARE
     let shareBtn = document.createElement("button");
     shareBtn.type = "button";
     shareBtn.classList.add("more-task-buttons", "share-btn");
-    shareBtn.innerHTML = `<p><span class="material-symbols-outlined">send</span>  Share</p>`;
+    shareBtn.innerHTML = `<p><span class="material-symbols-outlined">send</span> Share</p>`;
     shareBtn.addEventListener("click", shareTask);
 
     expandTaskDiv.append(editBtn, commentBtn, addTimeBtn, markTaskImportantBtn, shareBtn);
+
     taskCard.append(expandTaskDiv);
 };
 
@@ -367,7 +400,7 @@ const crossTask = function(e) {
 
     taskCard.classList.toggle("opaque");
 
-    let text = taskCard.querySelector(".task-main p");
+    let text = taskCard.querySelector(".task-main > p");
     text.classList.toggle("task-crossed");
 
     // hide expand menu if exists
@@ -378,8 +411,9 @@ const crossTask = function(e) {
     let comment = taskCard.querySelector(".add-comment-div");
     if (comment) comment.classList.add("hidden");
 
-    // hide expand button 
+    // hide expand button and important flag
     taskCard.querySelector(".expand-tasks-btn").classList.toggle("hidden")
+    taskCard.querySelector(".important-flag").classList.toggle("hidden")
 
 };
 
@@ -450,10 +484,10 @@ const markTaskImportant = function(e) {
     let taskMain = taskCard.querySelector(".task-main");
 
     // check if already marked
-    let existing = taskMain.querySelector(".important-flag");
+    let existingFlag = taskMain.querySelector(".important-flag");
 
-    if (existing) {
-        existing.remove(); // unmark
+    if (existingFlag) {
+        existingFlag.remove(); // unmark
         return;
     }
 
@@ -484,18 +518,21 @@ const editTask = function(e) {
     // prevent multiple editors
     if (taskCard.querySelector(".edit-container")) return;
 
-    let taskTextElement = taskMain.querySelector("p");
+    let taskTextElement = taskMain.querySelector(".task-main > p");
     let oldText = taskTextElement.innerText;
 
     // CREATE INPUT
     let editInput = document.createElement("textarea");
     editInput.value = oldText;
-    editInput.classList.add("comment-input");
-    editInput.style.marginTop = "20px";
+    editInput.classList.add("edit-input");
 
     // HIDE BUTTONS
     let buttonsDiv = taskMain.querySelector(".main-buttons-div");
     buttonsDiv.classList.add("hidden");
+
+    // HIDE IMPORTANT FLAG
+    let importantFlag = taskCard.querySelector(".important-flag")
+    if (importantFlag) importantFlag.classList.add("hidden")
 
     // CREATE BUTTONS DIV
     let editButtonsDiv = document.createElement("div");
@@ -525,12 +562,14 @@ const editTask = function(e) {
 
         taskMain.replaceChild(taskTextElement, editContainer);
         buttonsDiv.classList.remove("hidden");
+        importantFlag.classList.remove("hidden")
     });
 
     // CANCEL LOGIC
     cancelButton.addEventListener("click", function() {
         taskMain.replaceChild(taskTextElement, editContainer);
         buttonsDiv.classList.remove("hidden");
+        importantFlag.classList.remove("hidden")
     });
 
     editButtonsDiv.append(saveButton, cancelButton);
@@ -547,85 +586,85 @@ const editTask = function(e) {
 };
 
 
+// DELETE COMMENT
 
 const deleteComment = function(e) {
     e.target.parentElement.parentElement.remove()
 }
 
+
+// MODIFY COMMENT
+
 const modifyComment = function(e) {
 
-    // Get the current comment container
-    let commentContainer = e.target.closest(".new-comment-div") || e.target.closest(".add-comment-div")
-    let taskCard = e.currentTarget.closest(".taskCard")
-    let expandMenu = taskCard.querySelector(".expand-task-div")
-    
-    // Get existing text
-    let oldText = commentContainer.querySelector("p").innerText
+    let commentContainer = e.currentTarget.closest(".new-comment-div");
+    let taskCard = e.currentTarget.closest(".task-card");
+    let expandMenu = taskCard.querySelector(".expand-task-div");
 
-    // Hide expand menu
-    if (expandMenu) expandMenu.classList.add("hidden")
+    if (!commentContainer) return;
 
-    // CREATE COMMENT DIV (same as commentTask)
-    let commentDiv = document.createElement("div")
-    commentDiv.classList.add("add-comment-div")
-    commentDiv.classList.add("expand-task-div")
+    let textElement = commentContainer.querySelector("p");
+    let oldText = textElement.innerText;
 
-    let commentInput = document.createElement("textarea")
-    commentInput.type = "text"
-    commentInput.classList.add("comment-input")
-    commentInput.value = oldText  
-    commentInput.addEventListener("input", () => {
-        commentInput.classList.remove("error");
+    // hide expand menu
+    if (expandMenu) expandMenu.classList.add("hidden");
+
+    // prevent duplicate editors
+    if (commentContainer.querySelector(".edit-comment-container")) return;
+
+    // CREATE INPUT
+    let input = document.createElement("textarea");
+    input.value = oldText;
+    input.classList.add("comment-input");
+
+    // BUTTONS
+    let buttonsDiv = document.createElement("div");
+    buttonsDiv.classList.add("comment-buttons-div");
+
+    let saveBtn = document.createElement("button");
+    saveBtn.innerText = "Save";
+    saveBtn.classList.add("new-comment-action-buttons");
+
+    let cancelBtn = document.createElement("button");
+    cancelBtn.innerText = "Cancel";
+    cancelBtn.classList.add("new-comment-action-buttons");
+
+    // CONTAINER
+    let editContainer = document.createElement("div");
+    editContainer.classList.add("edit-comment-container");
+    editContainer.append(input, buttonsDiv);
+
+    buttonsDiv.append(saveBtn, cancelBtn);
+
+    // HIDE ORIGINAL TEXT + BUTTONS
+    textElement.classList.add("hidden");
+    let actionButtons = commentContainer.querySelector(".new-comment-buttons-div");
+    if (actionButtons) actionButtons.classList.add("hidden");
+
+    commentContainer.append(editContainer);
+
+    // SAVE
+    saveBtn.addEventListener("click", () => {
+        let newText = input.value.trim();
+        if (newText === "") return;
+
+        textElement.innerText = newText;
+
+        editContainer.remove();
+        textElement.classList.remove("hidden");
+        if (actionButtons) actionButtons.classList.remove("hidden");
     });
 
-    let commentButtonsDiv = document.createElement("div")
-    commentButtonsDiv.classList.add("comment-buttons-div")
+    // CANCEL
+    cancelBtn.addEventListener("click", () => {
+        editContainer.remove();
+        textElement.classList.remove("hidden");
+        if (actionButtons) actionButtons.classList.remove("hidden");
+    });
 
-    let submitCommentButton = document.createElement("button")
-    submitCommentButton.innerText = "Save"
-    submitCommentButton.classList.add("new-comment-action-buttons")
-    submitCommentButton.addEventListener("click", submitComment)
-
-    let removeCommentButton = document.createElement("button")
-    removeCommentButton.innerText = "Cancel"
-    removeCommentButton.classList.add("new-comment-action-buttons")
-    removeCommentButton.addEventListener("click", function() { 
-        
-        let originalCommentDiv = document.createElement("div")
-        originalCommentDiv.classList.add("new-comment-div")
-
-        let originalText = document.createElement("p")
-        originalText.innerText = oldText
-        originalText.classList.add("comment-created")
-
-        let buttonsDiv = document.createElement("div")
-        buttonsDiv.classList.add("new-comment-buttons-div")
-
-        let modifyBtn = document.createElement("button")
-        modifyBtn.classList.add("new-comment-action-buttons")
-        modifyBtn.innerText = "Modify"
-        modifyBtn.addEventListener("click", modifyComment)
-
-        let deleteBtn = document.createElement("button")
-        deleteBtn.classList.add("new-comment-action-buttons")
-        deleteBtn.innerText = "Delete"
-        deleteBtn.addEventListener("click", deleteComment)
-
-        buttonsDiv.append(modifyBtn, deleteBtn)
-        originalCommentDiv.append(originalText, buttonsDiv)
-
-        // restore original comment
-        commentDiv.replaceWith(originalCommentDiv)
-        }
-
-    )
-
-    commentButtonsDiv.append(submitCommentButton, removeCommentButton)
-    commentDiv.append(commentInput, commentButtonsDiv)
-
-    // Replace old comment with editable version
-    commentContainer.replaceWith(commentDiv)
-}
+    // autofocus
+    input.focus();
+};
     
 
 const submitComment = function(e) {
