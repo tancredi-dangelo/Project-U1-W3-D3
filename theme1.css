@@ -106,12 +106,6 @@ footer {
 
 /*  INPUT NEW TASK */
 
-#taskList.schedule-mode {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  grid-template-rows: repeat(24, 1fr);
-}
-
 #taskForm {
   width: 100%;
   min-height: 100px;
@@ -194,51 +188,38 @@ footer {
   background-color: rgb(255, 255, 135);
 }
 
-/* TASK BUTTONS */
+/* TASKLIST AND TASK CARD GENERALS*/
 
-.task-buttons-div {
-  width: 100%;
-  max-height: 40%;
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
-  flex-wrap: nowrap;
-  padding: 10px 0;
+#taskList {
+  width: 90%;
 }
 
-.task-buttons-div button:nth-of-type(1) {
-  border: 1px solid rgb(117, 255, 117);
-  box-shadow: 0 0 3px 2px rgb(117, 255, 117);
+#taskList.schedule-mode {
+  width: 90%;
+  display: grid;
+  grid-template-columns: 1fr 3fr;
+  grid-template-rows: repeat(24, 1fr);
 }
-
-.task-buttons-div button:nth-of-type(4) {
-  border: 1px solid rgb(255, 79, 79);
-  box-shadow: 0 0 3px 1.5px rgb(255, 79, 79);
-}
-
-.task-buttons {
-  min-width: 20px;
-  min-height: 20px;
-  max-width: 30px;
-  max-height: 30px;
-  background-color: white;
-  border: 1px solid white;
-  border-radius: 5px;
-  cursor: pointer;
-  box-shadow: 0 0 5px 1px rgba(0, 0, 0, 0.111);
-  margin: 0 10px;
-  padding: 1%;
-  box-sizing: content-box;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 22px;
-}
-
-/* COMMENT DIV */
 
 .task-card {
   width: 100%;
+  display: flex;
+  flex-direction: column;
+  background-color: rgba(255, 255, 255, 0.477);
+  border: rgba(128, 128, 128, 0.31);
+  border-radius: 5px;
+  box-sizing: border-box;
+  min-height: 40px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: 20px 0;
+  box-shadow: 0 0 5px 1px rgba(0, 0, 0, 0.111);
+}
+
+#taskCard.schedule-mode {
+  width: 80%;
+  height: 100%;
   display: flex;
   flex-direction: column;
   background-color: rgba(255, 255, 255, 0.477);
@@ -257,24 +238,96 @@ footer {
   width: 100%;
   height: 35%;
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
   align-items: center;
-  justify-content: center;
+  justify-content: space-between;
   padding: 5px 0;
 }
 
 .task-main > p {
   width: 100%;
   height: 60%;
-  font-size: 26px;
-  margin: 0 10px;
+  font-size: 20px;
+  margin: 2px;
   text-align: center;
   padding: 10px 5px;
+  border-right: 2px solid rgba(128, 128, 128, 0.511);
+  color: rgb(72, 72, 72);
+  font-weight: bold;
 }
 
 .task-main > div {
   width: inherit;
 }
+
+/* MAIN TASK BUTTONS */
+
+.main-buttons-div {
+  max-width: 30%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0px 5px;
+}
+
+.main-task-buttons {
+  min-width: 20px;
+  min-height: 20px;
+  max-width: 30px;
+  max-height: 30px;
+  background-color: rgba(255, 255, 255, 0);
+  color: rgb(72, 72, 72);
+  border: none;
+  cursor: pointer;
+  margin: 0 5px;
+  padding: 1%;
+  box-sizing: content-box;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 22px;
+}
+
+/* EXPAND TASK BUTTONS */
+
+.more-task-buttons-div {
+  width: 90%;
+  display: flex;
+  align-items: center;
+  justify-items: center;
+  padding: 1%;
+  margin: 0 5px;
+  border-top: 2px solid rgba(128, 128, 128, 0.511);
+}
+
+.more-task-buttons {
+  min-width: 20px;
+  min-height: 15px;
+  max-width: 200px;
+  max-height: 20px;
+  background-color: white;
+  border: 1px solid white;
+  border-radius: 5px;
+  cursor: pointer;
+  box-shadow: 0 0 5px 1px rgba(0, 0, 0, 0.111);
+  margin: 5px 5px;
+  padding: 1%;
+  box-sizing: content-box;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 22px;
+  color: gray;
+}
+
+.more-task-buttons > p {
+  color: grey;
+  font-family: "Quicksand", sans-serif;
+  font-size: 12px;
+  font-weight: bold;
+}
+
+/* COMMENT DIV */
 
 .comment-div {
   width: 100%;

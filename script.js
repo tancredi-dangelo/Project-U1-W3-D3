@@ -191,203 +191,218 @@ Array.from(textarea).forEach((area) => area.addEventListener("input", () => {
 
 // ADD A TASK FUNCTION
 
+// =========================
+// ADD TASK
+// =========================
 const addTask = function(e) {
+    e.preventDefault();
 
-    e.preventDefault()
-
-    if (input.value !== "") {
-
-        let inputValue = input.value
-
-        let taskCard = document.createElement("li")
-        taskCard.classList.add("task-card")
-
-        let taskMain = document.createElement("div")    // first div of the "li"
-        taskMain.classList.add("task-main")
-
-        let taskText = document.createElement("p")      // title of the task
-        taskText.innerText = inputValue
-
-        let taskButtonsDiv = document.createElement("div") // buttons div
-        taskButtonsDiv.classList.add("task-buttons-div")
-        
-        let checkBox = document.createElement("button") 
-        checkBox.setAttribute("type", "button")
-        checkBox.classList.add("task-buttons")
-        checkBox.classList.add("check-btn")
-        checkBox.innerHTML = `<span class="material-symbols-outlined">check</span>`
-        checkBox.addEventListener("click", crossTask)
-
-        let editButton = document.createElement("button")
-        editButton.setAttribute("type", "button")
-        editButton.classList.add("task-buttons")
-        editButton.classList.add("edit-btn")
-        editButton.innerHTML = `<span class="material-symbols-outlined">edit</span>`
-        editButton.addEventListener("click", editTask)
-
-        let commentButton = document.createElement("button")
-        commentButton.setAttribute("type", "button")
-        commentButton.classList.add("task-buttons")
-        commentButton.classList.add("comment-btn")
-        commentButton.innerHTML = `<span class="material-symbols-outlined">add_comment</span>`
-        commentButton.addEventListener("click", commentTask)
-
-        let deleteButton = document.createElement("button")
-        deleteButton.setAttribute("type", "button")
-        deleteButton.classList.add("task-buttons")
-        deleteButton.classList.add("delete-btn")
-        deleteButton.innerHTML = `<span class="material-symbols-outlined">delete</span>`
-        deleteButton.addEventListener("click", removeTask)
-
-        let shareButton = document.createElement("button")
-        shareButton.setAttribute("type", "button")
-        shareButton.classList.add("task-buttons")
-        shareButton.classList.add("share-btn")
-        shareButton.innerHTML = `<span class="material-symbols-outlined">send</span>`
-        shareButton.addEventListener("click", shareTask)
-
-        taskButtonsDiv.append(checkBox, editButton, commentButton, deleteButton, shareButton)
-        taskMain.append(taskText, taskButtonsDiv)
-        taskCard.appendChild(taskMain)
-        taskList.appendChild(taskCard)
-
-        input.value = ""
-        input.style.height = "40px"; // reset height
-
-    }   else {
-
-        input.classList.add("error")
-
+    if (input.value === "") {
+        input.classList.add("error");
+        return;
     }
-}
 
+    let taskCard = document.createElement("div");
+    taskCard.classList.add("task-card");
+
+    if (isScheduleActive) {
+        taskCard.classList.add("schedule-mode");
+    }
+
+    let taskMain = document.createElement("div");
+    taskMain.classList.add("task-main");
+
+    let taskText = document.createElement("p");
+    taskText.innerText = input.value;
+
+    // MAIN BUTTONS
+    let mainButtonsDiv = document.createElement("div");
+    mainButtonsDiv.classList.add("main-buttons-div");
+
+    // CHECK
+    let checkBtn = document.createElement("button");
+    checkBtn.type = "button";
+    checkBtn.classList.add("main-task-buttons", "check-btn");
+    checkBtn.innerHTML = `<span class="material-symbols-outlined">check</span>`;
+    checkBtn.addEventListener("click", crossTask);
+
+    // DELETE
+    let deleteBtn = document.createElement("button");
+    deleteBtn.type = "button";
+    deleteBtn.classList.add("main-task-buttons", "delete-btn");
+    deleteBtn.innerHTML = `<span class="material-symbols-outlined">delete</span>`;
+    deleteBtn.addEventListener("click", removeTask);
+
+    // EXPAND
+    let expandBtn = document.createElement("button");
+    expandBtn.classList.add("main-task-buttons", "expand-tasks-btn");
+    expandBtn.innerHTML = `<span class="material-symbols-outlined">more_horiz</span>`;
+    expandBtn.addEventListener("click", toggleTaskOptions);
+
+    mainButtonsDiv.append(checkBtn, deleteBtn, expandBtn);
+    taskMain.append(taskText, mainButtonsDiv);
+    taskCard.append(taskMain);
+    taskList.append(taskCard);
+
+    input.value = "";
+    input.style.height = "40px";
+};
+
+
+// =========================
+// TOGGLE EXPAND MENU
+// =========================
+const toggleTaskOptions = function(e) {
+
+    let taskCard = e.target.closest(".task-card");
+
+    let existing = taskCard.querySelector(".expand-task-div");
+
+    // TOGGLE
+    if (existing) {
+        existing.remove();
+        return;
+    }
+
+    let expandTaskDiv = document.createElement("div");
+    expandTaskDiv.classList.add("expand-task-div");
+
+    // EDIT
+    let editBtn = document.createElement("button");
+    editBtn.type = "button";
+    editBtn.classList.add("more-task-buttons", "edit-btn");
+    editBtn.innerHTML = `<span class="material-symbols-outlined">edit</span> <p>Edit</p>`;
+    editBtn.addEventListener("click", editTask);
+
+    // COMMENT
+    let commentBtn = document.createElement("button");
+    commentBtn.type = "button";
+    commentBtn.classList.add("more-task-buttons", "comment-btn");
+    commentBtn.innerHTML = `<span class="material-symbols-outlined">add_comment</span> <p>Add Comment</p>`;
+    commentBtn.addEventListener("click", commentTask);
+
+    // SHARE
+    let shareBtn = document.createElement("button");
+    shareBtn.type = "button";
+    shareBtn.classList.add("more-task-buttons", "share-btn");
+    shareBtn.innerHTML = `<span class="material-symbols-outlined">send</span> <p>Share</p>`;
+    shareBtn.addEventListener("click", shareTask);
+
+    expandTaskDiv.append(editBtn, commentBtn, shareBtn);
+    taskCard.append(expandTaskDiv);
+};
+
+
+// =========================
+// COMMENT TASK
+// =========================
 const commentTask = function(e) {
 
-    let taskCard = e.target.closest(".task-card")
+    let taskCard = e.target.closest(".task-card");
 
-    // prevent duplicates
-    if (taskCard.querySelector(".comment-div")) return
+    // prevent duplicate comments
+    if (taskCard.querySelector(".comment-div")) return;
 
-    // CREATE COMMENT DIV
-    let commentDiv = document.createElement("div")
-    commentDiv.classList.add("hidden")
-    commentDiv.classList.add("comment-div")
-     
-    //CREATE COMMENT INPUT !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-    let commentInput = document.createElement("textarea")
-    commentInput.placeholder = "write a comment..."
-    commentInput.classList.add("comment-input")
+    let commentDiv = document.createElement("div");
+    commentDiv.classList.add("comment-div");
+
+    let commentInput = document.createElement("textarea");
+    commentInput.placeholder = "write a comment...";
+    commentInput.classList.add("comment-input");
 
     commentInput.addEventListener("input", () => {
         commentInput.classList.remove("error");
-    })
+    });
 
-    //CREATE COMMENT BUTTONS DIV
-    let commentButtonsDiv = document.createElement("div")
-    commentButtonsDiv.classList.add("comment-buttons-div")
+    let buttonsDiv = document.createElement("div");
+    buttonsDiv.classList.add("comment-buttons-div");
 
-    //CREATE COMMENT SUBMIT BUTTON
-    let submitCommentButton = document.createElement("button")
-    submitCommentButton.type = "button"
-    submitCommentButton.classList.add("comment-button")
-    submitCommentButton.innerText = "Add Comment"
-    submitCommentButton.addEventListener("click", submitComment)
+    let submitBtn = document.createElement("button");
+    submitBtn.type = "button";
+    submitBtn.classList.add("comment-button");
+    submitBtn.innerText = "Add Comment";
+    submitBtn.addEventListener("click", submitComment);
 
-    //CREATE DISCARD COMMENT BUTTON
-    let removeCommentButton = document.createElement("button")
-    removeCommentButton.type = "button"
-    removeCommentButton.classList.add("comment-button")
-    removeCommentButton.setAttribute("id", "discardComment")
-    removeCommentButton.innerText = "Discard"
-    removeCommentButton.addEventListener("click", deleteComment)
+    let discardBtn = document.createElement("button");
+    discardBtn.type = "button";
+    discardBtn.classList.add("comment-button");
+    discardBtn.innerText = "Discard";
+    discardBtn.addEventListener("click", () => commentDiv.remove());
 
+    buttonsDiv.append(submitBtn, discardBtn);
+    commentDiv.append(commentInput, buttonsDiv);
 
-    // APPEND ELEMENTS TO COMMENT DIV
-    commentButtonsDiv.append(submitCommentButton, removeCommentButton)
-
-    commentDiv.append(commentInput, commentButtonsDiv)
-    commentDiv.classList.remove("hidden")
-    e.target.closest(".task-card").append(commentDiv)
-}
+    taskCard.append(commentDiv);
+};
 
 
-// TASK DONE 
-
+// =========================
+// CROSS TASK
+// =========================
 const crossTask = function(e) {
 
-    let task = e.target.closest(".task-card")
-    task.classList.toggle("opaque")
+    let task = e.target.closest(".task-card");
 
-    let commentDiv = task.querySelector(".comment-div")
-    if (commentDiv) {
-        commentDiv.classList.toggle("hidden")
-    }
+    task.classList.toggle("opaque");
 
-    let taskToCross = task.querySelector(".task-main p")
-    taskToCross.classList.toggle("task-crossed")
+    let text = task.querySelector(".task-main p");
+    text.classList.toggle("task-crossed");
 
-    // HIDE BUTTONS WHEN TASK DONE
-    const buttons = task.querySelectorAll(".task-buttons");
+    // hide expand menu if exists
+    let expandMenu = task.querySelector(".expand-task-div");
+    if (expandMenu) expandMenu.classList.add("hidden");
 
-    task.querySelector(".edit-btn")?.classList.toggle("hidden");
-    task.querySelector(".comment-btn")?.classList.toggle("hidden");
-    task.querySelector(".share-btn")?.classList.toggle("hidden");
-}
+    // hide comment if exists
+    let comment = task.querySelector(".comment-div");
+    if (comment) comment.classList.add("hidden");
+};
 
-
-// REMOVE TASK
-const removeTask = function(e) {
-
-    let taskCard = e.target.closest(".task-card")
-
-    // Save original content (so we can restore it if "No")
-    let originalContent = taskCard.innerHTML
-
-    // Clear the card
-    taskCard.innerHTML = ""
-
-    // Create confirmation text
-    let confirmText = document.createElement("p")
-    confirmText.innerText = "Are you sure?"
-
-    // Buttons container
-    let confirmButtons = document.createElement("div")
-    confirmButtons.classList.add("comment-buttons-div")
-
-    // YES button
-    let yesBtn = document.createElement("button")
-    yesBtn.innerText = "Yes"
-    yesBtn.classList.add("new-comment-action-buttons")
-
-    yesBtn.addEventListener("click", function() {
-        taskCard.remove()
-    })
-
-    // NO button
-    let noBtn = document.createElement("button")
-    noBtn.innerText = "No"
-    noBtn.classList.add("new-comment-action-buttons")
-
-    noBtn.addEventListener("click", function() {
-        taskCard.innerHTML = originalContent
-
-        // reattach event listeners!
-        reattachTaskEvents(taskCard)
-    })
-
-    confirmButtons.append(yesBtn, noBtn)
-    taskCard.append(confirmText, confirmButtons)
-}
 
 
 // REATTACH EVENT LISTENERS
 const reattachTaskEvents = function(taskCard) {
-    taskCard.querySelector(".task-buttons:nth-child(1)")?.addEventListener("click", crossTask)
-    taskCard.querySelector(".task-buttons:nth-child(2)")?.addEventListener("click", editTask)
-    taskCard.querySelector(".task-buttons:nth-child(3)")?.addEventListener("click", commentTask)
+    taskCard.querySelector(".check-btn")?.addEventListener("click", crossTask)
+    taskCard.querySelector(".delete-btn)")?.addEventListener("click", removeTask)
+    taskCard.querySelector(".expand-tasks-btn")?.addEventListener("click", toggleTaskOptions)
     taskCard.querySelector(".task-buttons:nth-child(4)")?.addEventListener("click", removeTask)
     taskCard.querySelector(".task-buttons:nth-child(5)")?.addEventListener("click", shareTask)
 }
+
+
+// =========================
+// REMOVE TASK  
+// =========================
+const removeTask = function(e) {
+
+    let taskCard = e.target.closest(".task-card");
+
+    let originalContent = taskCard.innerHTML;
+
+    taskCard.innerHTML = "";
+
+    let confirmDiv = document.createElement("div");
+    confirmDiv.classList.add("confirm-delete");
+
+    let text = document.createElement("p");
+    text.innerText = "Are you sure?";
+
+    let yesBtn = document.createElement("button");
+    yesBtn.classList.add("new-comment-action-button")
+    yesBtn.innerText = "Yes";
+    yesBtn.onclick = () => taskCard.remove();
+
+    let noBtn = document.createElement("button");
+    noBtn.innerText = "No";
+    yesBtn.classList.add("new-comment-action-button")
+    noBtn.onclick = () => {
+        confirmDiv.remove();
+        taskCard.innerHTML = originalContent
+    }
+
+    confirmDiv.append(text, yesBtn, noBtn);
+    taskCard.append(confirmDiv);
+    reattachTaskEvents(taskCard)
+};
 
 const shareTask = function(e) {
 
@@ -580,15 +595,30 @@ const submitComment = function(e) {
 
 }
 
+
+// ADD EVENT LISTENERS TO MAIN BUTTONS
+
+//Submit new task
 submitButton.addEventListener("click", addTask)
+
+//Toggle schedule mode
 timeScheduleButton.onclick = function() {
+
     this.classList.toggle("buttonActive")
+
     if (!isScheduleActive) {
         isScheduleActive = true
         taskList.classList.add("schedule-mode")
+        let taskCard = document.querySelectorAll(".task-card")
+        taskCard.forEach((card) => {
+            card.classList.add("schedule-mode")
+        })
     } else {
         isScheduleActive = false
         taskList.classList.remove("schedule-mode")
-    }
-   
+        let taskCard = document.querySelectorAll(".task-card")
+        taskCard.forEach((card) => {
+            card.classList.remove("schedule-mode")
+        })
+    }  
 }
