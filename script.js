@@ -556,9 +556,14 @@ const modifyComment = function(e) {
 
     // Get the current comment container
     let commentContainer = e.target.closest(".new-comment-div") || e.target.closest(".add-comment-div")
-
+    let taskCard = e.currentTarget.closest(".taskCard")
+    let expandMenu = taskCard.querySelector(".expand-task-div")
+    
     // Get existing text
     let oldText = commentContainer.querySelector("p").innerText
+
+    // Hide expand menu
+    if (expandMenu) expandMenu.classList.add("hidden")
 
     // CREATE COMMENT DIV (same as commentTask)
     let commentDiv = document.createElement("div")
