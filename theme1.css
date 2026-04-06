@@ -117,13 +117,16 @@ footer {
 }
 
 #taskForm div {
+  width: 90%;
   display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 #taskInput {
-  width: 85%;
-  height: 45px;
-  margin-bottom: 5px;
+  width: 90%;
+  height: 100%;
+  min-height: 45px;
   padding: 10px;
   box-sizing: border-box;
   font-size: 20px;
@@ -138,7 +141,7 @@ footer {
   font-weight: bold;
   box-shadow: 0 0 5px 1px rgba(0, 0, 0, 0.111);
   border: none;
-  border-radius: 10px;
+  border-radius: 5px;
 }
 
 #taskInput:focus {
@@ -146,15 +149,34 @@ footer {
   border: none;
 }
 
-#submitButton,
-#timeScheduleButton {
-  width: 50%;
-  max-width: 250px;
-  height: 40px;
+#submitButton {
+  height: 100%;
+  min-height: 45px;
   background-color: rgb(255, 255, 135);
   cursor: pointer;
-  margin: 5px;
-  font-family: sans-serif;
+  margin-left: 5px;
+  box-sizing: border-box;
+  border: none;
+  border-radius: 5px;
+  padding: 5px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 0 5px 1px rgba(0, 0, 0, 0.111);
+}
+
+#submitButton span {
+  font-size: 34px;
+  color: grey;
+  font-weight: bold;
+}
+
+#timeScheduleButton {
+  max-width: 400px;
+  height: 30px;
+  background-color: rgb(255, 255, 135);
+  cursor: pointer;
+  margin: 10px;
   font-size: 20px;
   color: grey;
   font-weight: bold;
@@ -291,7 +313,7 @@ footer {
   padding: 5px;
   display: flex;
   align-items: center;
-  justify-content: center;
+  justify-content: space-evenly;
 }
 
 .main-task-buttons {
@@ -335,12 +357,12 @@ footer {
   max-height: 35px;
   box-sizing: border-box;
   margin: 5px 5px;
-  padding: 10px 10px;
+  padding: 10px;
   display: flex;
   align-items: center;
-  justify-content: center;
+  justify-content: space-around;
   background-color: rgba(255, 255, 255, 0.797);
-  border: 1px solid white;
+  border: 2px solid white;
   border-radius: 5px;
   cursor: pointer;
 }
@@ -353,7 +375,7 @@ footer {
   margin: 0;
   color: grey;
   font-family: "Quicksand", sans-serif;
-  font-size: 14px;
+  font-size: 16px;
   font-weight: bold;
   display: flex;
   align-items: center;
@@ -408,11 +430,11 @@ footer {
 }
 
 .comment-button {
-  height: 100%;
-  min-width: 10%;
-  padding: 3px 10px;
+  height: 40px;
+  min-width: 60px;
+  padding: 5px 10px;
   margin: 10px;
-  background-color: white;
+  background-color: rgba(255, 255, 255, 0.6);
   border: none;
   border-radius: 5px;
   cursor: pointer;
@@ -598,6 +620,7 @@ footer {
 
 #calendar-expand a {
   color: rgb(157, 0, 157);
+  font-size: 18px;
 }
 
 #calendar-expand span {

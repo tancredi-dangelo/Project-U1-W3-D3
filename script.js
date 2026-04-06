@@ -303,35 +303,35 @@ const toggleTaskOptions = function(e) {
     let editBtn = document.createElement("button");
     editBtn.type = "button";
     editBtn.classList.add("more-task-buttons", "edit-btn");
-    editBtn.innerHTML = `<p><span class="material-symbols-outlined">edit</span> Edit</p>`;
+    editBtn.innerHTML = `<p>Edit</p>`;
     editBtn.addEventListener("click", editTask);
 
     // COMMENT
     let commentBtn = document.createElement("button");
     commentBtn.type = "button";
     commentBtn.classList.add("more-task-buttons", "comment-btn");
-    commentBtn.innerHTML = `<p><span class="material-symbols-outlined">add_comment</span> Add Comment</p>`;
+    commentBtn.innerHTML = `<p>Comment</p>`;
     commentBtn.addEventListener("click", commentTask);
 
     // ADD TIME
     let addTimeBtn = document.createElement("button");
     addTimeBtn.type = "button";
     addTimeBtn.classList.add("more-task-buttons", "add-time-btn");
-    addTimeBtn.innerHTML = `<p><span class="material-symbols-outlined">nest_clock_farsight_analog</span> Add Time</p>`;
+    addTimeBtn.innerHTML = `<p>Add Time</p>`;
     addTimeBtn.addEventListener("click", addTimeToTask);
 
     // IMPORTANT
     let markTaskImportantBtn = document.createElement("button");
     markTaskImportantBtn.type = "button";
     markTaskImportantBtn.classList.add("more-task-buttons", "mark-important-btn");
-    markTaskImportantBtn.innerHTML = `<p><span class="material-symbols-outlined">exclamation</span> Mark As Important</p>`;
+    markTaskImportantBtn.innerHTML = `<p>Important!</p>`;
     markTaskImportantBtn.addEventListener("click", markTaskImportant);
 
     // SHARE
     let shareBtn = document.createElement("button");
     shareBtn.type = "button";
     shareBtn.classList.add("more-task-buttons", "share-btn");
-    shareBtn.innerHTML = `<p><span class="material-symbols-outlined">send</span> Share</p>`;
+    shareBtn.innerHTML = `<p>Share</p>`;
     shareBtn.addEventListener("click", shareTask);
 
     expandTaskDiv.append(editBtn, commentBtn, addTimeBtn, markTaskImportantBtn, shareBtn);
