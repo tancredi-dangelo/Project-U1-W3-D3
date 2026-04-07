@@ -1,4 +1,3 @@
-const form = document.getElementById("taskForm")
 const submitButton = document.getElementById("submitButton")
 const timeScheduleButton = document.getElementById("timeScheduleButton")
 const input = document.getElementById("taskInput")
@@ -183,6 +182,14 @@ renderCalendar(currentDate);
 // -----------TASKS-------------- //
 
 // TASK INPUT CAN SCROLL DOWN AS TEXT EXPANDS
+
+const autoResize = (area) => {
+  area.addEventListener("input", () => {
+    area.style.height = "auto";
+    area.style.height = area.scrollHeight + "px";
+    area.classList.remove("error");
+  });
+};
 
 Array.from(textarea).forEach((area) => area.addEventListener("input", () => {
   area.style.height = "auto";
@@ -413,7 +420,8 @@ const crossTask = function(e) {
 
     // hide expand button and important flag
     taskCard.querySelector(".expand-tasks-btn").classList.toggle("hidden")
-    taskCard.querySelector(".important-flag").classList.toggle("hidden")
+    let flag = taskCard.querySelector(".important-flag");
+if (flag) flag.classList.toggle("hidden");
 
 };
 
@@ -458,7 +466,9 @@ const removeTask = function(e) {
 
     noBtn.onclick = () => {
         taskMain.classList.remove("hidden");
-        if (newCommentDiv) newCommentDiv.classList.remove("hidden")
+        taskCard.querySelectorAll(".new-comment-div").forEach(c => {
+            c.classList.remove("hidden");
+        });
         confirmDiv.remove();
     };
 
@@ -562,7 +572,7 @@ const editTask = function(e) {
 
         taskMain.replaceChild(taskTextElement, editContainer);
         buttonsDiv.classList.remove("hidden");
-        importantFlag.classList.remove("hidden")
+        if (importantFlag) importantFlag.classList.remove("hidden");
     });
 
     // CANCEL LOGIC
