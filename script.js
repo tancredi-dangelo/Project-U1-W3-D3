@@ -191,11 +191,7 @@ const autoResize = (area) => {
   });
 };
 
-Array.from(textarea).forEach((area) => area.addEventListener("input", () => {
-  area.style.height = "auto";
-  area.style.height = area.scrollHeight + "px";
-  area.classList.remove("error"); 
-}));
+autoResize(input)
 
 
 // =========================
@@ -266,75 +262,53 @@ const toggleTaskOptions = function(e) {
     let existingMenu = taskCard.querySelector(".expand-task-div");
 
     let comments = taskCard.querySelectorAll(".new-comment-div");
+    let addCommentDiv = taskCard.querySelector(".add-comment-div");
     let editContainer = taskCard.querySelector(".edit-comment-container");
-
 
     // CLOSE MENU
     if (existingMenu) {
         existingMenu.remove();
 
-        // restore comments
+        // ✅ restore ALL comments
         comments.forEach(c => c.classList.remove("hidden"));
 
+        // ✅ restore input box too (THIS WAS MISSING)
+        if (addCommentDiv) addCommentDiv.classList.remove("hidden");
         return;
     }
 
-    // HANDLE COMMENT EDIT OPEN
-
-    if (editContainer) {
-        let commentContainer = editContainer.closest(".new-comment-div");
-
-        let textElement = commentContainer.querySelector("p");
-        let actionButtons = commentContainer.querySelector(".new-comment-buttons-div");
-
-        // remove editor
-        editContainer.remove();
-
-        // restore original UI
-        textElement.classList.remove("hidden");
-        if (actionButtons) actionButtons.classList.remove("hidden");
-    }
-
-    // HIDE COMMENTS
-    comments.forEach(c => c.classList.add("hidden"));
-
-    // CLOSE OTHER MENUS
-    document.querySelectorAll(".expand-task-div").forEach(el => el.remove());
+    // ✅ HIDE ADD-COMMENT-DIV
+    if (addCommentDiv) addCommentDiv.classList.add("hidden");
 
 
     // CREATE MENU
     let expandTaskDiv = document.createElement("div");
     expandTaskDiv.classList.add("expand-task-div");
 
-    // EDIT
     let editBtn = document.createElement("button");
     editBtn.type = "button";
     editBtn.classList.add("more-task-buttons", "edit-btn");
     editBtn.innerHTML = `<p>Edit</p>`;
     editBtn.addEventListener("click", editTask);
 
-    // COMMENT
     let commentBtn = document.createElement("button");
     commentBtn.type = "button";
     commentBtn.classList.add("more-task-buttons", "comment-btn");
     commentBtn.innerHTML = `<p>Comment</p>`;
     commentBtn.addEventListener("click", commentTask);
 
-    // ADD TIME
     let addTimeBtn = document.createElement("button");
     addTimeBtn.type = "button";
     addTimeBtn.classList.add("more-task-buttons", "add-time-btn");
     addTimeBtn.innerHTML = `<p>Add Time</p>`;
     addTimeBtn.addEventListener("click", addTimeToTask);
 
-    // IMPORTANT
     let markTaskImportantBtn = document.createElement("button");
     markTaskImportantBtn.type = "button";
     markTaskImportantBtn.classList.add("more-task-buttons", "mark-important-btn");
     markTaskImportantBtn.innerHTML = `<p>Important!</p>`;
     markTaskImportantBtn.addEventListener("click", markTaskImportant);
 
-    // SHARE
     let shareBtn = document.createElement("button");
     shareBtn.type = "button";
     shareBtn.classList.add("more-task-buttons", "share-btn");
@@ -354,23 +328,33 @@ const commentTask = function(e) {
 
     let taskCard = e.currentTarget.closest(".task-card");
 
-    //close all existing comment div
-    document.querySelectorAll(".add-comment-div").forEach(el => el.remove());
+    // close ONLY expand menus (not comments)
+    document.querySelectorAll(".expand-task-div").forEach(el => {
+        if (!el.classList.contains("add-comment-div")) {
+            el.remove();
+        }
+    });
 
-    // close all existing expand div
-    document.querySelectorAll(".expand-task-div").forEach(el => el.remove());
-
-    // prevent duplicate comments
+    // prevent multiple input boxes in SAME task (optional but recommended)
     if (taskCard.querySelector(".add-comment-div")) return;
 
+    // ensure comments container exists
+    let commentsContainer = taskCard.querySelector(".comments-container");
+    if (!commentsContainer) {
+        commentsContainer = document.createElement("div");
+        commentsContainer.classList.add("comments-container");
+        taskCard.appendChild(commentsContainer);
+    }
 
+    // CREATE COMMENT INPUT BOX
     let addCommentDiv = document.createElement("div");
-    addCommentDiv.classList.add("expand-task-div");
     addCommentDiv.classList.add("add-comment-div");
 
     let commentInput = document.createElement("textarea");
-    commentInput.placeholder = "write a comment...";
+    commentInput.placeholder = "Write a comment...";
     commentInput.classList.add("comment-input");
+
+    autoResize(commentInput);
 
     commentInput.addEventListener("input", () => {
         commentInput.classList.remove("error");
@@ -383,7 +367,45 @@ const commentTask = function(e) {
     submitBtn.type = "button";
     submitBtn.classList.add("comment-button");
     submitBtn.innerText = "Add Comment";
-    submitBtn.addEventListener("click", submitComment);
+
+    submitBtn.addEventListener("click", function() {
+        let text = commentInput.value.trim();
+
+        if (text === "") {
+            commentInput.classList.add("error");
+            return;
+        }
+
+        // CREATE COMMENT
+        let newCommentDiv = document.createElement("div");
+        newCommentDiv.classList.add("new-comment-div");
+
+        let newCommentText = document.createElement("p");
+        newCommentText.innerText = text;
+        newCommentText.classList.add("comment-created");
+
+        let newCommentButtonsDiv = document.createElement("div");
+        newCommentButtonsDiv.classList.add("new-comment-buttons-div");
+
+        let modifyBtn = document.createElement("button");
+        modifyBtn.innerText = "Edit";
+        modifyBtn.classList.add("new-comment-action-buttons");
+        modifyBtn.addEventListener("click", modifyComment);
+
+        let deleteBtn = document.createElement("button");
+        deleteBtn.innerText = "Delete";
+        deleteBtn.classList.add("new-comment-action-buttons");
+        deleteBtn.addEventListener("click", deleteComment);
+
+        newCommentButtonsDiv.append(modifyBtn, deleteBtn);
+        newCommentDiv.append(newCommentText, newCommentButtonsDiv);
+
+        // ✅ append to container (NOT taskCard directly)
+        commentsContainer.appendChild(newCommentDiv);
+
+        // remove input box
+        addCommentDiv.remove();
+    });
 
     let discardBtn = document.createElement("button");
     discardBtn.type = "button";
@@ -394,7 +416,11 @@ const commentTask = function(e) {
     buttonsDiv.append(submitBtn, discardBtn);
     addCommentDiv.append(commentInput, buttonsDiv);
 
-    taskCard.append(addCommentDiv);
+    // ✅ append input BELOW existing comments
+    taskCard.appendChild(addCommentDiv);
+
+    // nice UX
+    commentInput.focus();
 };
 
 
@@ -536,6 +562,8 @@ const editTask = function(e) {
     editInput.value = oldText;
     editInput.classList.add("edit-input");
 
+    autoResize(editInput)
+
     // HIDE BUTTONS
     let buttonsDiv = taskMain.querySelector(".main-buttons-div");
     buttonsDiv.classList.add("hidden");
@@ -579,7 +607,7 @@ const editTask = function(e) {
     cancelButton.addEventListener("click", function() {
         taskMain.replaceChild(taskTextElement, editContainer);
         buttonsDiv.classList.remove("hidden");
-        importantFlag.classList.remove("hidden")
+        if (importantFlag) importantFlag.classList.remove("hidden")
     });
 
     editButtonsDiv.append(saveButton, cancelButton);
