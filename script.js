@@ -229,20 +229,13 @@ const addTask = function(e) {
     checkBtn.innerHTML = `<span class="material-symbols-outlined">check_box</span>`;
     checkBtn.addEventListener("click", crossTask);
 
-    // DELETE
-    let deleteBtn = document.createElement("button");
-    deleteBtn.type = "button";
-    deleteBtn.classList.add("main-task-buttons", "delete-btn");
-    deleteBtn.innerHTML = `<span class="material-symbols-outlined">delete</span>`;
-    deleteBtn.addEventListener("click", removeTask);
-
     // EXPAND
     let expandBtn = document.createElement("button");
     expandBtn.classList.add("main-task-buttons", "expand-tasks-btn");
     expandBtn.innerHTML = `<span class="material-symbols-outlined">more_horiz</span>`;
     expandBtn.addEventListener("click", toggleTaskOptions);
 
-    mainButtonsDiv.append(checkBtn, deleteBtn, expandBtn);
+    mainButtonsDiv.append(checkBtn, expandBtn);
     taskMain.append(taskText, mainButtonsDiv);
     taskCard.append(taskMain);
     taskList.append(taskCard);
@@ -285,39 +278,59 @@ const toggleTaskOptions = function(e) {
     let expandTaskDiv = document.createElement("div");
     expandTaskDiv.classList.add("expand-task-div");
 
+    //EDIT
     let editBtn = document.createElement("button");
     editBtn.type = "button";
     editBtn.classList.add("more-task-buttons", "edit-btn");
     editBtn.innerHTML = `<p>Edit</p>`;
     editBtn.addEventListener("click", editTask);
 
+    //COMMENT
     let commentBtn = document.createElement("button");
     commentBtn.type = "button";
     commentBtn.classList.add("more-task-buttons", "comment-btn");
     commentBtn.innerHTML = `<p>Comment</p>`;
     commentBtn.addEventListener("click", commentTask);
 
+    // ADD TIME
     let addTimeBtn = document.createElement("button");
     addTimeBtn.type = "button";
     addTimeBtn.classList.add("more-task-buttons", "add-time-btn");
     addTimeBtn.innerHTML = `<p>Add Time</p>`;
     addTimeBtn.addEventListener("click", addTimeToTask);
 
+    // MARK IMPORTANT
     let markTaskImportantBtn = document.createElement("button");
     markTaskImportantBtn.type = "button";
     markTaskImportantBtn.classList.add("more-task-buttons", "mark-important-btn");
     markTaskImportantBtn.innerHTML = `<p>Important!</p>`;
     markTaskImportantBtn.addEventListener("click", markTaskImportant);
 
+    //SHARE
     let shareBtn = document.createElement("button");
     shareBtn.type = "button";
     shareBtn.classList.add("more-task-buttons", "share-btn");
     shareBtn.innerHTML = `<p>Share</p>`;
     shareBtn.addEventListener("click", shareTask);
 
-    expandTaskDiv.append(editBtn, commentBtn, addTimeBtn, markTaskImportantBtn, shareBtn);
+    //SDELETE
+    let deleteBtn = document.createElement("button");
+    deleteBtn.type = "button";
+    deleteBtn.classList.add("more-task-buttons", "delete-btn");
+    deleteBtn.innerHTML = `<p>Delete</p>`;
+    deleteBtn.addEventListener("click", removeTask);
 
-    taskCard.append(expandTaskDiv);
+    expandTaskDiv.append(editBtn, commentBtn, addTimeBtn, markTaskImportantBtn, shareBtn, deleteBtn);
+
+    const secondChild = taskCard.children[1];
+
+    if (secondChild) {
+    taskCard.insertBefore(expandTaskDiv, secondChild);
+    } else {
+    // If there's only 0 or 1 child, just append
+    taskCard.appendChild(expandTaskDiv);
+    }
+
 };
 
 
@@ -330,8 +343,8 @@ const commentTask = function(e) {
 
     // close ONLY expand menus (not comments)
     document.querySelectorAll(".expand-task-div").forEach(el => {
-        if (!el.classList.contains("add-comment-div")) {
-            el.remove();
+        if (!el.classList.contains("add-comment-div") || !el.classList.contains("new-comment-div")) {
+            el.classList.add("hidden");
         }
     });
 
@@ -397,11 +410,33 @@ const commentTask = function(e) {
         deleteBtn.classList.add("new-comment-action-buttons");
         deleteBtn.addEventListener("click", deleteComment);
 
+        function updateButtons() {
+            const buttons = newCommentButtonsDiv.querySelectorAll("button");
+
+            if (taskCard.classList.contains("disabled-state")) {
+                buttons.forEach(btn => btn.disabled = true);
+            } else {
+                buttons.forEach(btn => btn.disabled = false);
+            }
+        }
+
+        // Run once immediately
+        updateButtons();
+
+        // Observe class changes on taskCard
+        const observer = new MutationObserver(updateButtons);
+        observer.observe(taskCard, { attributes: true, attributeFilter: ["class"] });
+
+
+        // append buttons to div
         newCommentButtonsDiv.append(modifyBtn, deleteBtn);
         newCommentDiv.append(newCommentText, newCommentButtonsDiv);
 
-        // ✅ append to container (NOT taskCard directly)
+        // append div to container 
         commentsContainer.appendChild(newCommentDiv);
+
+        // append comments container to task card
+        taskCard.appendChild(commentsContainer);
 
         // remove input box
         addCommentDiv.remove();

@@ -308,9 +308,8 @@ footer {
 /* MAIN TASK BUTTONS */
 
 .main-buttons-div {
-  width: 35%;
+  width: 25%;
   max-width: 100px;
-  padding: 5px;
   display: flex;
   align-items: center;
   justify-content: space-evenly;
@@ -356,7 +355,7 @@ footer {
   max-width: 200px;
   max-height: 35px;
   box-sizing: border-box;
-  margin: 5px 5px;
+  margin: 4px 4px;
   padding: 10px;
   display: flex;
   align-items: center;
@@ -480,9 +479,11 @@ footer {
 
 .new-comment-buttons-div {
   width: 35%;
+  max-width: 140px;
   display: flex;
   align-items: center;
   justify-content: center;
+  margin-right: 5px;
 }
 
 .new-comment-action-buttons {
