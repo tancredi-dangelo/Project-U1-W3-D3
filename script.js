@@ -395,7 +395,7 @@ const commentTask = function(e) {
 
         let newCommentText = document.createElement("p");
         newCommentText.innerText = text;
-        newCommentText.classList.add("comment-created");
+        newCommentText.classList.add("comment-text");
 
         let newCommentButtonsDiv = document.createElement("div");
         newCommentButtonsDiv.classList.add("new-comment-buttons-div");
@@ -479,10 +479,16 @@ const crossTask = function(e) {
     let comment = taskCard.querySelector(".add-comment-div");
     if (comment) comment.classList.add("hidden");
 
-    // hide expand button and important flag
+    // hide expand button 
     taskCard.querySelector(".expand-tasks-btn").classList.toggle("hidden")
+
+    // hide important flag if exist
     let flag = taskCard.querySelector(".important-flag");
-if (flag) flag.classList.toggle("hidden");
+    if (flag) flag.classList.toggle("hidden");
+
+    // hide comment buttons
+    let commentButtons = taskCard.querySelector(".new-comment-buttons-div")
+    if (commentButtons) commentButtons.classList.toggle("hidden")
 
 };
 

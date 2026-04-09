@@ -471,8 +471,7 @@ footer {
   padding-left: 10px;
 }
 
-.comment-created {
-  text-decoration: dotted;
+.comment-text {
   font-size: 20px;
   font-weight: normal;
 }
@@ -482,7 +481,7 @@ footer {
   max-width: 140px;
   display: flex;
   align-items: center;
-  justify-content: center;
+  justify-content: space-evenly;
   margin-right: 5px;
 }
 
