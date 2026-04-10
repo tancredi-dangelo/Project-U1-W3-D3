@@ -17,18 +17,14 @@
 
 // SIZE 
 
-@mixin size($box, $minwidth: null, $width: null, $maxwidth: null, $minheight: null, $height: null, $maxheight: null) {
-
-  @if $box != null { box-sizing: $box; }
-
-  @if $minwidth != null { min-width: $minwidth; }
-  @if $width != null { width: $width; }
-  @if $maxwidth != null { max-width: $maxwidth; }
-
-  @if $minheight != null { min-height: $minheight; }
-  @if $height != null { height: $height; }
-  @if $maxheight != null { max-height: $maxheight; }
-
+@mixin size($minwidth, $width, $maxwidth, $minheight, $height, $maxheight) {
+  box-sizing: border-box; 
+  min-width: $minwidth; 
+  width: $width;
+  max-width: $maxwidth;
+  min-height: $minheight; 
+  height: $height; 
+  max-height: $maxheight; 
 }
 
 

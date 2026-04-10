@@ -7,11 +7,11 @@
 //  GLOBAL   
 
 html {
-  @include size(320px, 100%, null, null, 100%, null);
+  @include size(320px, 100%, auto, auto, 100%, auto);
 }
 
 body {
-  @include size(320px, 100%, null, null, 100%, null);
+  @include size(320px, 100%, auto, auto, 100%, auto);
   @include margpad(0, 0);
   background: #e3ffb2;
   background: linear-gradient(315deg, #e3ffb2, #96f9edb3);
@@ -24,28 +24,18 @@ body {
 //   HEADER   
 
 header {
-  @include size(null, 100%, null, null, 15%, null);
+  @include size(auto, 100%, auto, auto, 15%, auto);
   @include margpad(0, 0);
   @include flex(row, center, space-between, nowrap);
   position: relative;
 }
 
 header ion-icon {
-  @include size(border-box, null, 10%, 40px, null, 100%, null);
+  @include size(auto, 10%, 40px, auto, 100%, auto);
   @include margpad(0, 5%);
   cursor: pointer;
 }
 
-header h1 {
-  color: rgb(57, 57, 57);
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  font-size: 45px;
-  margin: 0;
-  padding: 0;
-}
 
 header h1 {
   @include font(45px, bold, rgb(57, 57, 57));
@@ -67,7 +57,7 @@ header h1 {
 //  MAIN
 
 main {
-  @include size(300px, 100%, null, 50%, null, null);
+  @include size(auto, 100%, auto, 50%, auto, auto);
   @include margpad(0 auto, 0);
   @include flex(column, center, flex-start, nowrap);
   background-color: rgba(255, 255, 255, 0);
@@ -110,27 +100,27 @@ button {
 // FOOTER
 
 footer {
-  @include size(null, 100%, null, null, 20%, null);
+  @include size(20%, 100%, auto, auto, 20%, auto);
   @include margpad(0, 0);
 }
 
 /*  INPUT NEW TASK */
 
 #taskform {
-  @include size(null, 100%, null, 100px, null, null);
+  @include size(auto, 100%, auto, 100px, auto, auto);
   @include margpad(0, 10px 0);
   @include flex(column, center, space-evenly, nowrap);
 }
 
 #taskform div {
-  @include size(null, 90%, null, null, null, null);
+  @include size(auto, 90%, auto, auto, auto, auto);
   @include flex(row, center, center, nowrap);
 }
 
 
 #taskInput {
 
-  @include size(border-box, null, 90%, null, 45px, 100%, null);
+  @include size(auto, 90%, auto, 45px, 100%, auto);
   @include margpad(0, 10px);
   @include flex(row, center, flex-start, nowrap);
   @include font(20px, bold, rgb(49, 49, 49));
@@ -152,7 +142,7 @@ footer {
 
 
 #submitButton {
-  @include size(border-box, null, null, null, 45px, 100%, null);
+  @include size(auto, auto, auto, 45px, 100%, auto);
   @include flex(row, center, center, nowrap);
   @include margpad(0 0 5px 0, 5px);
   @include border(none, 5px);
@@ -174,7 +164,7 @@ footer {
 // SWITCH TO TIME SCHEDULE MODE
 
 #timeScheduleButton {
-  @include size(border-box, null, null, 200px, null, 30px, null);
+  @include size(auto, auto, 200px, auto, 30px, auto);
   @include margpad(10px, 0 10px);
   @include flex(row, center, center, nowrap);
   @include border(none, 5px);
@@ -199,12 +189,12 @@ footer {
 /* TASKLIST AND TASK CARD GENERALS*/
 
 #taskList {
-  @include size(border-box, null, 90%, null, null, null, null);
+  @include size(auto, 90%, auto, auto, auto, auto);
 }
 
 
 #taskList.schedule-mode {
-  @include size(border-box, null, 90%, null, null, null, null);
+  @include size(auto, 90%, auto, auto, auto, auto);
   display: grid;
   grid-template-columns: 1fr 3fr;
   grid-template-rows: repeat(24, 1fr);
@@ -212,7 +202,7 @@ footer {
 
 
 .task-card {
-  @include size(border-box, null, 100%, null, 40px, null, null);
+  @include size(auto, 100%, auto, 40px, auto, auto);
   @include flex(column, center, center, nowrap);
   @include margpad(20px 0, 0);
   @include border(none, 5px);
@@ -223,7 +213,7 @@ footer {
 
 
 .task-card.schedule-mode {
-  @include size(border-box, null, 80%, null, 40px, null, null);
+  @include size(auto, 80%, auto, 40px, auto, auto);
   @include flex(column, center, center, nowrap);
   @include margpad(20px 0, 0);
   @include border(none, 5px);
@@ -234,14 +224,14 @@ footer {
 
 
 .task-main {
-  @include size(border-box, null, 95%, null, null, 35%, null);
+  @include size(auto, 95%, auto, auto, 35%, auto);
   @include flex(row, center, space-between, nowrap);
   @include margpad(0, 5px 0);
 }
 
 
 .task-main > p {
-  @include size(border-box, null, 100%, null, null, 60%, null);
+  @include size(auto, 100%, auto, auto, 60%, auto);
   @include margpad(5px, 10px 5px);
   @include font(24px, bold, rgb(72, 72, 72));
 
@@ -253,7 +243,7 @@ footer {
 /* IMPORTANT FLAG DIV */
 
 .important-flag {
-  @include size(border-box, null, 20px, null, null, 20px, null);
+  @include size(auto, 20px, auto, auto, 20px, auto);
   @include flex(row, center, center, nowrap);
   @include border(4px solid rgba(255, 73, 73, 0.766), 50%);
 }
@@ -271,17 +261,21 @@ footer {
 /* MAIN TASK BUTTONS */
 
 .main-buttons-div {
-  @include size(border-box, null, 25%, 100px, null, null, null);
+  @include size(auto, 25%, 100px, auto, auto, auto);
   @include flex(row, center, space-evenly, nowrap);
 }
 
 .main-task-buttons {
-  @include size(content-box, 20px, null, 30px, 26px, null, 30px);
+  @include size(20px, auto, 30px, 26px, auto, 30px);
   @include flex(row, center, center, nowrap);
   @include margpad(0 2.5px, 5px);
   @include border(none, 0);
 
   background-color: rgba(255, 255, 255, 0);
+
+  &:active {
+  background-color: rgba(255, 255, 255, 0.903);
+  }
 }
 
 .main-task-buttons span {
@@ -297,45 +291,25 @@ footer {
 /* EXPAND TASK BUTTONS */
 
 .expand-task-div {
-  width: 95%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-wrap: wrap;
-  padding: 10px 0;
+  @include size(auto, 95%, auto, auto, auto, auto);
+  @include flex(row, center, center, wrap);
+  @include margpad(0, 10px 0);
   border-top: 2px solid rgba(194, 192, 192, 0.529);
 }
 
 .more-task-buttons {
-  min-width: 25px;
-  min-height: 15px;
-  max-width: 200px;
-  max-height: 35px;
-  box-sizing: border-box;
-  margin: 4px 4px;
-  padding: 10px;
-  display: flex;
-  align-items: center;
-  justify-content: space-around;
+  @include size(25px, auto, 200px, 15px, auto, 35px);
+  @include margpad(4px 4px, 10px);
+  @include flex(row, center, space-around, nowrap);
+  @include border(2px solid white, 5px);
   background-color: rgba(255, 255, 255, 0.797);
-  border: 2px solid white;
-  border-radius: 5px;
-  cursor: pointer;
-}
-
-.main-task-buttons:active {
-  background-color: rgba(255, 255, 255, 0.903);
 }
 
 .more-task-buttons > p {
-  margin: 0;
-  color: grey;
+  @include margpad(0, 0);
+  @include flex(row, center, center, nowrap);
+  @include font(16px, bold, grey);
   font-family: "Quicksand", sans-serif;
-  font-size: 16px;
-  font-weight: bold;
-  display: flex;
-  align-items: center;
-  justify-content: center;
 }
 
 .more-task-buttons span {
