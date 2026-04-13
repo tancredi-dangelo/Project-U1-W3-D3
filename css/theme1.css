@@ -214,6 +214,14 @@ footer {
   background-color: rgb(255, 255, 135);
 }
 
+#submitButton,
+#timeScheduleButton,
+.main-task-buttons {
+  transition:
+    background-color 0.3s ease,
+    color 0.3s ease;
+}
+
 /* TASKLIST AND TASK CARD GENERALS*/
 
 #taskList {
