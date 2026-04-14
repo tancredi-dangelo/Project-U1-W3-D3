@@ -255,7 +255,6 @@ const toggleTaskOptions = function(e) {
 
     let comments = taskCard.querySelectorAll(".new-comment-div");
     let addCommentDiv = taskCard.querySelector(".add-comment-div");
-    let editContainer = taskCard.querySelector(".edit-comment-container");
 
     // CLOSE MENU
     if (existingMenu) {
@@ -264,7 +263,7 @@ const toggleTaskOptions = function(e) {
         // ✅ restore ALL comments
         comments.forEach(c => c.classList.remove("hidden"));
 
-        // ✅ restore input box too (THIS WAS MISSING)
+        // ✅ restore input box too
         if (addCommentDiv) addCommentDiv.classList.remove("hidden");
         return;
     }
@@ -326,7 +325,6 @@ const toggleTaskOptions = function(e) {
     if (secondChild) {
     taskCard.insertBefore(expandTaskDiv, secondChild);
     } else {
-    // If there's only 0 or 1 child, just append
     taskCard.appendChild(expandTaskDiv);
     }
 
@@ -515,7 +513,9 @@ const removeTask = function(e) {
 
     let taskMain = taskCard.querySelector(".task-main");
     let expandMenu = taskCard.querySelector(".expand-task-div");
-    let newCommentDiv = taskCard.querySelector(".new-comment-div")
+
+    // FIX: use querySelectorAll to hide ALL comments, not just the first one
+    let allCommentDivs = taskCard.querySelectorAll(".new-comment-div");
 
     let confirmDiv = document.createElement("div");
     confirmDiv.classList.add("confirm-delete");
@@ -543,7 +543,9 @@ const removeTask = function(e) {
     // hide content
     taskMain.classList.add("hidden");
     if (expandMenu) expandMenu.classList.add("hidden");
-    if (newCommentDiv) newCommentDiv.classList.add("hidden")
+
+    // FIX: hide ALL comment divs
+    allCommentDivs.forEach(c => c.classList.add("hidden"));
 
     confirmDiv.append(text, yesBtn, noBtn);
     taskCard.append(confirmDiv);
@@ -580,7 +582,10 @@ const markTaskImportant = function(e) {
 
     // add at top
     taskMain.prepend(exclamationPointDiv);
-    taskCard.querySelector(".expand-task-div").classList.toggle("hidden")
+
+    // FIX: always hide (not toggle) the expand menu after marking
+    let expandMenu = taskCard.querySelector(".expand-task-div");
+    if (expandMenu) expandMenu.classList.add("hidden");
 };
 
 const addTimeToTask = function(e)  {
@@ -590,8 +595,8 @@ const addTimeToTask = function(e)  {
 const editTask = function(e) {
 
     let taskCard = e.currentTarget.closest(".task-card");
-    let taskMain = taskCard.querySelector(".task-main")
-    let expandMenu = taskCard.querySelector(".expand-task-div")
+    let taskMain = taskCard.querySelector(".task-main");
+    let expandMenu = taskCard.querySelector(".expand-task-div");
 
     // prevent multiple editors
     if (taskCard.querySelector(".edit-container")) return;
@@ -604,15 +609,15 @@ const editTask = function(e) {
     editInput.value = oldText;
     editInput.classList.add("edit-input");
 
-    autoResize(editInput)
+    autoResize(editInput);
 
     // HIDE BUTTONS
     let buttonsDiv = taskMain.querySelector(".main-buttons-div");
     buttonsDiv.classList.add("hidden");
 
     // HIDE IMPORTANT FLAG
-    let importantFlag = taskCard.querySelector(".important-flag")
-    if (importantFlag) importantFlag.classList.add("hidden")
+    let importantFlag = taskCard.querySelector(".important-flag");
+    if (importantFlag) importantFlag.classList.add("hidden");
 
     // CREATE BUTTONS DIV
     let editButtonsDiv = document.createElement("div");
@@ -633,7 +638,16 @@ const editTask = function(e) {
     editContainer.classList.add("edit-container");
     editContainer.append(editInput, editButtonsDiv);
 
+    editButtonsDiv.append(saveButton, cancelButton);
+
+    // HIDE EXPAND MENU 
+    if (expandMenu) expandMenu.classList.add("hidden");
+
+    // REPLACE TEXT WITH INPUT
+    taskMain.replaceChild(editContainer, taskTextElement);
+
     // SAVE LOGIC
+    // FIX: replaceChild args were inverted — newNode first, then the node to replace
     saveButton.addEventListener("click", function() {
         let newText = editInput.value.trim();
         if (newText === "") return;
@@ -649,17 +663,8 @@ const editTask = function(e) {
     cancelButton.addEventListener("click", function() {
         taskMain.replaceChild(taskTextElement, editContainer);
         buttonsDiv.classList.remove("hidden");
-        if (importantFlag) importantFlag.classList.remove("hidden")
+        if (importantFlag) importantFlag.classList.remove("hidden");
     });
-
-    editButtonsDiv.append(saveButton, cancelButton);
-
-    // HIDE EXPAND MENU 
-    if (expandMenu) expandMenu.classList.add("hidden")
-
-    // REPLACE TEXT WITH INPUT
-    taskMain.replaceChild(editContainer, taskTextElement);
-
 
     // 👉 auto focus (nice UX)
     editInput.focus();
@@ -745,60 +750,6 @@ const modifyComment = function(e) {
     // autofocus
     input.focus();
 };
-    
-
-const submitComment = function(e) {
-
-    let commentDiv = e.target.closest(".add-comment-div")
-    let commentInput = commentDiv.querySelector(".comment-input")
-    let text = commentInput.value.trim()
-
-    if (text === "") {
-
-        commentInput.classList.add("error")
-        return
-
-    } else {
-
-        //CREATE NEW COMMENT TEXT
-        let newCommentDiv = document.createElement("div")
-        newCommentDiv.classList.add("new-comment-div")
-
-        let newCommentText = document.createElement("p")
-        newCommentText.innerText = text
-        newCommentText.classList.add("comment-created")
-
-        //CREATE NEW COMMENT BUTTONS
-        let newCommentButtonsDiv = document.createElement("div")
-        newCommentButtonsDiv.classList.add("new-comment-buttons-div")
-
-        let modifyCommentButton = document.createElement("button")
-        modifyCommentButton.classList.add("new-comment-action-buttons")
-        modifyCommentButton.innerText = "Modify"
-        modifyCommentButton.addEventListener("click", modifyComment)
-
-        let deleteCommentButton = document.createElement("button")
-        deleteCommentButton.classList.add("new-comment-action-buttons")
-        deleteCommentButton.innerText = "Delete"
-        deleteCommentButton.addEventListener("click", deleteComment)
-
-
-        //APPENDING ELEMENTS TO THEIR DIV
-        newCommentButtonsDiv.append(modifyCommentButton, deleteCommentButton)
-
-        newCommentDiv.append(newCommentText, newCommentButtonsDiv)
-
-        commentDiv.parentElement.appendChild(newCommentDiv)
-
-        //REMOVING ADD-COMMENT DIV
-        commentDiv.remove()
-
-        //RESET COMMENT INPUT VALUE
-        commentInput.value = ""
-
-    }
-
-}
 
 
 // ADD EVENT LISTENERS TO MAIN BUTTONS

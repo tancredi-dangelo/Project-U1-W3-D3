@@ -11,6 +11,7 @@
 //MARGIN AND PADDING
 
 @mixin margpad($margin, $padding) {
+  box-sizing: border-box; 
   margin: $margin;
   padding: $padding;
 }
@@ -18,7 +19,6 @@
 // SIZE 
 
 @mixin size($minwidth, $width, $maxwidth, $minheight, $height, $maxheight) {
-  box-sizing: border-box; 
   min-width: $minwidth; 
   width: $width;
   max-width: $maxwidth;
