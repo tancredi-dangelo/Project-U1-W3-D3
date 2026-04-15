@@ -1,0 +1,92 @@
+
+// INPUT TEXTAREA GENERALS
+
+textarea {
+  resize: none;
+  overflow: hidden;
+}
+
+
+
+// MAIN TASK INPUT FORM
+
+#taskform {
+  @include size(auto, 100%, auto, 100px, auto, auto);
+  @include margpad(0, 10px 0);
+  @include flex(column, center, space-evenly, nowrap);
+}
+
+#taskform div {
+  @include size(auto, 90%, auto, auto, auto, auto);
+  @include flex(row, center, center, nowrap);
+}
+
+
+#taskInput {
+
+  @include size(auto, 90%, auto, 45px, 100%, auto);
+  @include margpad(0, 10px);
+  @include flex(row, center, flex-start, nowrap);
+  @include font(20px, bold, rgb(49, 49, 49));
+  @include border(none, 5px);
+
+  font-family: "Quicksand", sans-serif;
+  box-shadow: 0 0 5px 1px rgba(0, 0, 0, 0.111);
+
+  line-height: 1.2;
+  overflow: hidden;
+  resize: none;
+
+  &:focus {
+  outline: none;
+  border: none;
+  }
+  
+}
+
+
+// COMMENT INPUT FORMS
+
+.comment-input {
+  flex: 1;
+  min-height: 35px;
+  width: 95%;
+  box-sizing: border-box;
+  display: inline-block;
+  border: 1px solid white;
+  border-radius: 5px;
+  font-family: "Quicksand", sans-serif;
+  font-size: 16px;
+  color: rgb(72, 72, 72);
+  padding: 5px;
+  box-shadow: 0 0 5px 1px rgba(0, 0, 0, 0.111);
+}
+
+.comment-input:focus {
+  outline: none;
+  border: none;
+}
+
+
+// EDIT TASK INPUT FORM
+
+.edit-input {
+  flex: 1;
+  min-height: 35px;
+  width: 95%;
+  box-sizing: border-box;
+  display: inline-block;
+  border: 1px solid white;
+  border-radius: 5px;
+  font-family: "Quicksand", sans-serif;
+  font-size: 20px;
+  font-weight: bold;
+  color: rgb(72, 72, 72);
+  padding: 5px;
+  margin: 20px 0 0 0;
+  box-shadow: 0 0 5px 1px rgba(0, 0, 0, 0.111);
+}
+
+.edit-input:focus {
+  outline: none;
+}

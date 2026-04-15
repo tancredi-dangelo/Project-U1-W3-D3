@@ -6,7 +6,7 @@
     <title>myTask</title>
     <meta name="description" content="Easy Task Manager" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <link rel="stylesheet" href="./theme1.css" />
+    <link rel="stylesheet" href="../css/theme1.css" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
@@ -55,15 +55,19 @@
         </div>
       </div>
       <form id="taskForm">
-        <textarea id="taskInput" rows="1" required></textarea>
         <div>
-          <button id="submitButton" type="submit">Add new</button>
+          <textarea id="taskInput" rows="1" required></textarea>
+          <button id="submitButton" type="submit">
+            <span class="material-symbols-outlined"> add </span>
+          </button>
+        </div>
+        <div>
           <button id="timeScheduleButton" type="button">
             Toggle time schedule
           </button>
         </div>
       </form>
-      <ul id="taskList"></ul>
+      <section id="taskList"></section>
     </main>
     <footer></footer>
     <script
@@ -74,6 +78,6 @@
       nomodule
       src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"
     ></script>
-    <script src="script.js" async defer></script>
+    <script src="../javascript/script.js" async defer></script>
   </body>
 </html>
