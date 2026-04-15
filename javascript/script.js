@@ -342,7 +342,7 @@ const commentTask = function(e) {
 
     // close ONLY expand menus (not comments)
     document.querySelectorAll(".expand-task-div").forEach(el => {
-        if (!el.classList.contains("add-comment-div") || !el.classList.contains("new-comment-div")) {
+        if (!el.classList.contains("add-comment-div") && !el.classList.contains("new-comment-div")) {
             el.classList.add("hidden");
         }
     });
@@ -426,6 +426,11 @@ const commentTask = function(e) {
         const observer = new MutationObserver(updateButtons);
         observer.observe(taskCard, { attributes: true, attributeFilter: ["class"] });
 
+        deleteBtn.addEventListener("click", () => {
+            observer.disconnect();6
+            deleteComment();
+        });
+
 
         // append buttons to div
         newCommentButtonsDiv.append(modifyBtn, deleteBtn);
@@ -433,9 +438,6 @@ const commentTask = function(e) {
 
         // append div to container 
         commentsContainer.appendChild(newCommentDiv);
-
-        // append comments container to task card
-        taskCard.appendChild(commentsContainer);
 
         // remove input box
         addCommentDiv.remove();
@@ -515,7 +517,7 @@ const removeTask = function(e) {
 
     let taskMain = taskCard.querySelector(".task-main");
     let expandMenu = taskCard.querySelector(".expand-task-div");
-    let newCommentDiv = taskCard.querySelector(".new-comment-div")
+    let newCommentDiv = taskCard.querySelectorAll(".new-comment-div")
 
     let confirmDiv = document.createElement("div");
     confirmDiv.classList.add("confirm-delete");
@@ -543,7 +545,8 @@ const removeTask = function(e) {
     // hide content
     taskMain.classList.add("hidden");
     if (expandMenu) expandMenu.classList.add("hidden");
-    if (newCommentDiv) newCommentDiv.classList.add("hidden")
+
+    if (newCommentDiv) newCommentDiv.forEach((div) => div.classList.add("hidden"))
 
     confirmDiv.append(text, yesBtn, noBtn);
     taskCard.append(confirmDiv);
@@ -800,12 +803,10 @@ const submitComment = function(e) {
 
 }
 
-
 // ADD EVENT LISTENERS TO MAIN BUTTONS
 
 //Submit new task
 submitButton.addEventListener("click", addTask)
-
 
 //Toggle time schedule mode
 timeScheduleButton.onclick = function (e) {
