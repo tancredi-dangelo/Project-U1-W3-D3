@@ -1,0 +1,24 @@
+// MAIN FONTS
+
+h2 {
+  width: 100%;
+  font-size: 30px;
+}
+
+h4 {
+  margin: 20px 0;
+  vertical-align: middle;
+}
+
+h4 a {
+  text-decoration: none;
+  color: purple;
+}
+
+p {
+  flex: 1 1 0;
+  min-width: 0;
+  overflow-wrap: break-word;
+  word-break: break-word;
+  hyphens: auto;
+}

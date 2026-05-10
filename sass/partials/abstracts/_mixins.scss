@@ -1,0 +1,45 @@
+// FLEXBOX
+
+@mixin flex($direction, $align, $justify, $wrap) {
+  display: flex;
+  flex-direction: $direction;
+  align-items: $align;
+  justify-content: $justify;
+  flex-wrap: $wrap;
+}
+
+//MARGIN AND PADDING
+
+@mixin margpad($margin, $padding) {
+  box-sizing: border-box; 
+  margin: $margin;
+  padding: $padding;
+}
+
+// SIZE 
+
+@mixin size($minwidth, $width, $maxwidth, $minheight, $height, $maxheight) {
+  min-width: $minwidth; 
+  width: $width;
+  max-width: $maxwidth;
+  min-height: $minheight; 
+  height: $height; 
+  max-height: $maxheight; 
+}
+
+
+// FONT
+
+@mixin font($size, $weight, $color) {
+  font-size: $size;
+  font-weight: $weight;
+  color: $color;
+}
+
+// BORDER
+
+@mixin border($main, $radius) {
+  border: $main;
+  border-radius: $radius;
+}
+

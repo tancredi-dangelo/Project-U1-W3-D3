@@ -1,0 +1,170 @@
+
+// CALENDAR BUTTONS IN _CALENDAR.SCSS
+
+// BUTTONS GENERALS
+
+button {
+  cursor: pointer;
+}
+
+
+// MAIN TASK SUBMIT BUTTON
+
+#submitButton {
+  @include size(auto, auto, auto, 45px, 100%, auto);
+  @include flex(row, center, center, nowrap);
+  @include margpad(0 0 5px 0, 5px);
+  @include border(none, 5px);
+
+  background-color: rgb(255, 255, 135);
+  box-shadow: 0 0 5px 1px rgba(0, 0, 0, 0.111);
+
+  &:hover {
+  background-color: rgb(255, 255, 88);
+  }
+}
+
+
+#submitButton span {
+  @include font(34px, bold, grey);
+}
+
+
+// SWITCH TO TIME SCHEDULE MODE BUTTON
+
+.button-active {
+    background-color: rgb(255, 255, 88);
+    color: grey;
+}
+
+#timeScheduleButton {
+  @include size(auto, auto, 200px, auto, 30px, auto);
+  @include margpad(10px, 0 10px);
+  @include flex(row, center, center, nowrap);
+  @include border(none, 5px);
+  @include font(14px, bold, rgba(112, 112, 112, 0.363));
+  
+  font-family: "Quicksand", sans-serif;
+  background-color: rgba(255, 255, 255, 0.075);
+  box-shadow: 0 0 5px 1px rgba(0, 0, 0, 0.111);
+
+  &:hover {
+    background-color: rgba(255, 255, 193, 0.371);
+    color: grey;
+  }
+
+}
+
+// BUTTONS TRANSITIONS 
+
+
+
+
+
+// MAIN TASK BUTTONS
+
+.main-buttons-div {
+  @include size(auto, 25%, 100px, auto, auto, auto);
+  @include flex(row, center, space-evenly, nowrap);
+}
+
+.main-task-buttons {
+  @include size(20px, auto, 30px, 26px, auto, 30px);
+  @include flex(row, center, center, nowrap);
+  @include margpad(0 2.5px, 5px);
+  @include border(none, 0);
+
+  background-color: rgba(255, 255, 255, 0);
+
+  &:active {
+  background-color: rgba(255, 255, 255, 0.903);
+  }
+}
+
+.main-task-buttons span {
+  font-size: 28px;
+  color: rgb(72, 72, 72);
+}
+
+.main-task-buttons span {
+  @include font(28px, normal, rgb(72, 72, 72));
+}
+
+
+// EXPAND TASK BUTTONS 
+
+.more-task-buttons {
+  @include size(25px, auto, 200px, 15px, auto, 35px);
+  @include margpad(4px 4px, 10px);
+  @include flex(row, center, space-around, nowrap);
+  @include border(2px solid white, 5px);
+  background-color: rgba(255, 255, 255, 0.797);
+}
+
+.more-task-buttons > p {
+  @include margpad(0, 0);
+  @include flex(row, center, center, nowrap);
+  @include font(16px, bold, grey);
+  font-family: "Quicksand", sans-serif;
+}
+
+.more-task-buttons span {
+  font-size: 20px;
+  color: rgb(72, 72, 72);
+}
+
+
+// COMMENT BUTTONS
+
+.comment-button {
+  height: 40px;
+  min-width: 60px;
+  padding: 5px 10px;
+  margin: 5px;
+  background-color: rgba(255, 255, 255, 0);
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-family: "Quicksand", sans-serif;
+  color: purple;
+  font-size: 16px;
+  font-weight: bold;
+}
+
+#submitComment {
+  margin-right: 10px;
+}
+
+#discardCommment {
+  margin-left: 10px;
+}
+
+.new-comment-action-buttons {
+  min-width: 50px;
+  background-color: rgba(255, 255, 255, 0);
+  border: none;
+  cursor: pointer;
+  font-family: "Quicksand", sans-serif;
+  font-size: 16px;
+  color: purple;
+  font-weight: bold;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+
+// EDIT TASK BUTTONS
+
+.edit-container button {
+  margin: 0 10px;
+}
+
+.confirm-delete {
+  margin: 20px;
+}
+
+.confirm-delete p {
+  margin: 0;
+  font-size: 20px;
+}
